@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
 {
-    private Transform _transform;
     private Camera _camera;
     private Rigidbody _rigidbody;
+
+    [SerializeField]
+    private Transform _playerCamera;
+    [SerializeField]
+    private Transform _orientation;
 
     private const float RotationSpeed = 100f;
     private const float Speed = 200f;
@@ -29,7 +34,6 @@ public class PlayerController : Singleton<PlayerController>
     private void GetComponents()
     {
         _camera = Camera.main;
-        _transform = GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
@@ -39,6 +43,11 @@ public class PlayerController : Singleton<PlayerController>
         Move();
     }
     
+    public void Update()
+    {
+        Look();
+    }
+
     private void Move()
     {
         _translationZ = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
@@ -48,10 +57,10 @@ public class PlayerController : Singleton<PlayerController>
 
         // TODO: Make this not ugly / smoother
         if (IsRunning())
-            _rigidbody.velocity = (_transform.forward * _translationZ) + (_transform.right * _translationX) +
-                                  (_transform.forward * _runSpeed);
+            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
+                                  (_orientation.forward * _runSpeed);
         else
-            _rigidbody.velocity = (_transform.forward * _translationZ) + (_transform.right * _translationX) + Vector3.up * _translationY;
+            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) + Vector3.up * _translationY;
         
     }
 
@@ -65,13 +74,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private bool IsOnGround()
     {
-        return Physics.Raycast(_transform.position, Vector3.down, 1.5f);
-    }
-
-    private void Turn()
-    {
-        _yaw = Input.GetAxis("Mouse X") * Time.deltaTime * RotationSpeed;
-        _transform.eulerAngles += new Vector3(0, _yaw, 0);
+        return Physics.Raycast(transform.position, Vector3.down, 1.5f);
     }
 
     private bool IsRunning()
@@ -87,16 +90,20 @@ public class PlayerController : Singleton<PlayerController>
     // TODO: Stop camera from going upside down
     private void Look()
     {
-        _pitch = Input.GetAxis("Mouse Y") * Time.deltaTime * RotationSpeed;
-        _roll = 0f;
+        _pitch -= Input.GetAxis("Mouse Y") * Time.deltaTime * RotationSpeed;
         _pitch = Mathf.Clamp(_pitch, -90f, 90f);
         
-        _camera.transform.localEulerAngles += new Vector3(-_pitch, 0, _roll);
+        _yaw = Input.GetAxis("Mouse X") * Time.deltaTime * RotationSpeed;
+        _yaw = _playerCamera.transform.localRotation.eulerAngles.y + _yaw;
+        
+        _roll = 0f;
+        
+        _playerCamera.transform.localRotation = Quaternion.Euler(_pitch, _yaw, _roll);
+        _orientation.transform.localRotation = Quaternion.Euler(0.0f, _yaw, 0.0f);
     }
 
-    private void LateUpdate()
+    private void MoveCamera()
     {
-        Turn();
-        Look();
+        _camera.transform.position = _rigidbody.transform.position;
     }
 }
