@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SolidObjectBlue
+  m_Name: SolidObjectWhite
   m_Shader: {fileID: -6465566751694194690, guid: 5402085f39580394f9a2055ce65497bf,
     type: 3}
   m_ShaderKeywords: 
@@ -84,6 +84,6 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - Color_1D8D0053: {r: 0.07006645, g: 0, b: 1, a: 0}
+    - Color_1D8D0053: {r: 1, g: 1, b: 1, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

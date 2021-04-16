@@ -6,9 +6,9 @@ public class PlayerController : Singleton<PlayerController>
     private Camera _camera;
     private Rigidbody _rigidbody;
 
-    private const float RotationSpeed = 150f;
-    private const float Speed = 5f;
-    private const float RunningSpeed = 5f;
+    private const float RotationSpeed = 100f;
+    private const float Speed = 200f;
+    private const float RunningSpeed = 200f;
     private const float JumpPower = 4f;
 
     private float _pitch;
@@ -17,6 +17,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private float _translationZ;
     private float _translationX;
+    private float _translationY;
     private float _runSpeed;
 
     void Start()
@@ -32,31 +33,26 @@ public class PlayerController : Singleton<PlayerController>
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-        Turn();
-    }
-
     private void FixedUpdate()
     {
-        Move();
         Jump();
+        Move();
     }
-
+    
     private void Move()
     {
         _translationZ = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
         _translationX = Input.GetAxis("Horizontal") * Time.deltaTime * Speed;
+        _translationY = _rigidbody.velocity.y;
         _runSpeed = Input.GetAxis("Run") * Time.deltaTime * RunningSpeed;
 
         // TODO: Make this not ugly / smoother
         if (IsRunning())
-        {
-            _transform.position += (_transform.forward * _translationZ) + (_transform.right * _translationX) +
-                                   (_transform.forward * _runSpeed);
-        }
+            _rigidbody.velocity = (_transform.forward * _translationZ) + (_transform.right * _translationX) +
+                                  (_transform.forward * _runSpeed);
         else
-            _transform.position += (_transform.forward * _translationZ) + (_transform.right * _translationX);
+            _rigidbody.velocity = (_transform.forward * _translationZ) + (_transform.right * _translationX) + Vector3.up * _translationY;
+        
     }
 
     private void Jump()
@@ -88,19 +84,19 @@ public class PlayerController : Singleton<PlayerController>
         return Input.GetKey(KeyCode.W);
     }
 
-    // TODO: Stop camera from going glitching
+    // TODO: Stop camera from going upside down
     private void Look()
     {
         _pitch = Input.GetAxis("Mouse Y") * Time.deltaTime * RotationSpeed;
         _roll = 0f;
-
         _pitch = Mathf.Clamp(_pitch, -90f, 90f);
-
+        
         _camera.transform.localEulerAngles += new Vector3(-_pitch, 0, _roll);
     }
 
     private void LateUpdate()
     {
+        Turn();
         Look();
     }
 }
