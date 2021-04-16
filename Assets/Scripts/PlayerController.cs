@@ -9,7 +9,7 @@ public class PlayerController : Singleton<PlayerController>
     private const float RotationSpeed = 150f;
     private const float Speed = 5f;
     private const float RunningSpeed = 5f;
-    private const float JumpPower = 10f;
+    private const float JumpPower = 4f;
 
     private float _pitch;
     private float _yaw;
@@ -34,8 +34,12 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Update()
     {
-        Move();
         Turn();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
         Jump();
     }
 
@@ -45,7 +49,7 @@ public class PlayerController : Singleton<PlayerController>
         _translationX = Input.GetAxis("Horizontal") * Time.deltaTime * Speed;
         _runSpeed = Input.GetAxis("Run") * Time.deltaTime * RunningSpeed;
 
-        // TODO: MAKE THIS NOT UGLY
+        // TODO: Make this not ugly / smoother
         if (IsRunning())
         {
             _transform.position += (_transform.forward * _translationZ) + (_transform.right * _translationX) +
@@ -55,13 +59,17 @@ public class PlayerController : Singleton<PlayerController>
             _transform.position += (_transform.forward * _translationZ) + (_transform.right * _translationX);
     }
 
-    // TODO: 
     private void Jump()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && IsOnGround())
         {
-            _rigidbody.AddForce(_transform.up * JumpPower);
+            _rigidbody.velocity = Vector3.up * JumpPower;
         }
+    }
+
+    private bool IsOnGround()
+    {
+        return Physics.Raycast(_transform.position, Vector3.down, 1.5f);
     }
 
     private void Turn()
@@ -80,6 +88,7 @@ public class PlayerController : Singleton<PlayerController>
         return Input.GetKey(KeyCode.W);
     }
 
+    // TODO: Stop camera from going glitching
     private void Look()
     {
         _pitch = Input.GetAxis("Mouse Y") * Time.deltaTime * RotationSpeed;
