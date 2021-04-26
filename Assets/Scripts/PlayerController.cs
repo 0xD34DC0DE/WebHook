@@ -29,6 +29,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         GetComponents();
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void GetComponents()
@@ -100,10 +101,5 @@ public class PlayerController : Singleton<PlayerController>
         
         _playerCamera.transform.localRotation = Quaternion.Euler(_pitch, _yaw, _roll);
         _orientation.transform.localRotation = Quaternion.Euler(0.0f, _yaw, 0.0f);
-    }
-
-    private void MoveCamera()
-    {
-        _camera.transform.position = _rigidbody.transform.position;
     }
 }
