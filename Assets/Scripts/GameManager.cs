@@ -1,43 +1,48 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private LevelManager _levelManager;
-    private bool _isPaused;
-
-    private void Start()
-    {
-        EventManager.Listen("OnSceneLoaded", OnSceneLoaded);
-        EventManager.Listen("OnSceneLoaded", OnSceneUnloaded);
-    }
-
+    public bool _isGamePaused;
+    public EventManager.OnGamePauseEvent OnGamePauseEvent;
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
         }
+        
+        // Testing
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            AudioManager._instance.PlayMusic(AudioManager._instance.musicExample);
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AudioManager._instance.PlaySoundEffect(AudioManager._instance.soundEffectExample);
+        }
     }
 
     private void TogglePause()
     {
-        if (_isPaused)
+        if (_isGamePaused)
             UnpauseGame();
         else
             PauseGame();
         
-        EventManager.Invoke("TogglePause");
+        OnGamePauseEvent.Invoke(_isGamePaused);
     }
 
     private void UnpauseGame()
     {
-        _isPaused = false;
+        _isGamePaused = false;
         Time.timeScale = 1f;
     }
 
     private void PauseGame()
     {
-        _isPaused = true;
+        _isGamePaused = true;
         Time.timeScale = 0f;
     }
     

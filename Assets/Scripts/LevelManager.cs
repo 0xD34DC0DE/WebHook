@@ -12,7 +12,7 @@ public class LevelManager : Singleton<LevelManager>
         }
         else
         {
-            EventManager.Invoke("OnSceneLoaded");
+            //EventManager.Invoke("OnSceneLoaded");
         }
     }
 }

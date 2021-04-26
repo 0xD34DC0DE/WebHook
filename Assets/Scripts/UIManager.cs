@@ -2,12 +2,12 @@
 {
     void Start()
     {
-        EventManager.Listen("TogglePause", togglePauseMenu);
+        GameManager._instance.OnGamePauseEvent.AddListener(TogglePauseMenu);
         gameObject.SetActive(false);
     }
 
-    private void togglePauseMenu()
+    private void TogglePauseMenu(bool isGamePaused)
     {
-        gameObject.SetActive(!gameObject.activeSelf);
+        gameObject.SetActive(isGamePaused);
     }
 }
