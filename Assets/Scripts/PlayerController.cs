@@ -59,9 +59,9 @@ public class PlayerController : Singleton<PlayerController>
         // TODO: Make this not ugly / smoother
         if (IsRunning())
             _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
-                                  (_orientation.forward * _runSpeed);
+                                  (_orientation.forward * _runSpeed) + (Vector3.up * _translationY);
         else
-            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) + Vector3.up * _translationY;
+            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) + (Vector3.up * _translationY);
         
     }
 

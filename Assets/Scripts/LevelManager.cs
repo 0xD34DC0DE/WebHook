@@ -2,7 +2,9 @@
 using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
-{
+{  
+    public EventManager.OnSceneLoaded OnSceneLoadedEvent;
+    
     public void LoadScene(string sceneName)
     {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
@@ -12,7 +14,7 @@ public class LevelManager : Singleton<LevelManager>
         }
         else
         {
-            //EventManager.Invoke("OnSceneLoaded");
+            OnSceneLoadedEvent.Invoke(sceneName);
         }
     }
 }

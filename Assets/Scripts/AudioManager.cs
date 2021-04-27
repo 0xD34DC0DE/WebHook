@@ -5,7 +5,6 @@ public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource _audioSource;
     private bool _isMusicPlaying;
-    private bool _isGamePaused;
 
     // Testing
     public AudioClip musicExample;
@@ -14,7 +13,7 @@ public class AudioManager : Singleton<AudioManager>
     private void Start()
     {
         InitializeComponents();
-        GameManager._instance.OnGamePauseEvent.AddListener(PauseMusic);
+        GameManager._instance.OnGamePausedEvent.AddListener(PauseMusic);
     }
 
     private void InitializeComponents()
@@ -28,7 +27,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlayMusic(AudioClip audioClip)
     {
-        if (_isGamePaused) return;
+        if (GameManager._instance.isGamePaused) return;
         
         float audioClipLength = audioClip.length;
         _audioSource.clip = audioClip;
@@ -41,12 +40,10 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PauseMusic(bool isGamePaused)
     {
-        if (isGamePaused)
+        if (GameManager._instance.isGamePaused)
             _audioSource.Pause();
         else
             _audioSource.Play();
-
-        _isGamePaused = isGamePaused;
     }
 
     private IEnumerator StopMusicOnEnd(float audioClipLength)
@@ -64,7 +61,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlaySoundEffect(AudioClip audioClip)
     {
-        if (_isGamePaused) return;
+        if (GameManager._instance.isGamePaused) return;
         _audioSource.PlayOneShot(audioClip, 0.8f);
     }
 }
