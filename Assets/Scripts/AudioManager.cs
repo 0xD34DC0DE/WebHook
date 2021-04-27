@@ -12,17 +12,21 @@ public class AudioManager : Singleton<AudioManager>
     
     private void Start()
     {
-        InitializeComponents();
+        GetComponents();
+        LoadSounds();
         GameManager._instance.OnGamePausedEvent.AddListener(PauseMusic);
     }
 
-    private void InitializeComponents()
+    // Testing TODO: DELETE
+    private void LoadSounds()
     {
-        _audioSource = GetComponent<AudioSource>();
-
-        // Testing
         musicExample = Resources.Load<AudioClip>("Music/music_1");
         soundEffectExample = Resources.Load<AudioClip>("SoundEffects/sound_1");
+    }
+    
+    private void GetComponents()
+    {
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayMusic(AudioClip audioClip)

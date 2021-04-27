@@ -11,6 +11,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField]
     private Transform _orientation;
 
+    [SerializeField] private float _lerpSpeed = 20f;
+
     private const float RotationSpeed = 100f;
     private const float Speed = 200f;
     private const float RunningSpeed = 200f;
@@ -25,6 +27,8 @@ public class PlayerController : Singleton<PlayerController>
     private float _translationY;
     private float _runSpeed;
 
+    private bool _noclip;
+    
     void Start()
     {
         GetComponents();
@@ -47,6 +51,15 @@ public class PlayerController : Singleton<PlayerController>
     public void Update()
     {
         Look();
+        CheckInput();
+    }
+
+    private void CheckInput()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            _rigidbody.isKinematic = !_rigidbody.isKinematic;
+        }
     }
 
     private void Move()
@@ -56,13 +69,26 @@ public class PlayerController : Singleton<PlayerController>
         _translationY = _rigidbody.velocity.y;
         _runSpeed = Input.GetAxis("Run") * Time.deltaTime * RunningSpeed;
 
-        // TODO: Make this not ugly / smoother
+        if (_rigidbody.isKinematic)
+            Noclip();
+        else
+            Walk();
+    }
+
+    private void Noclip()
+    {
+        transform.position = Vector3.Lerp(transform.position, transform.position + ((_translationZ * _camera.transform.forward) + 
+                (_translationX *_camera.transform.right)),  _lerpSpeed);
+    }
+
+    private void Walk()
+    {
         if (IsRunning())
             _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
                                   (_orientation.forward * _runSpeed) + (Vector3.up * _translationY);
         else
-            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) + (Vector3.up * _translationY);
-        
+            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
+                                  (Vector3.up * _translationY);
     }
 
     private void Jump()

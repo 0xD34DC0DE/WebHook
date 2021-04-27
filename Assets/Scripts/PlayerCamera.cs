@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour {
+public class PlayerCamera : MonoBehaviour
+{
+    private Transform playerPosition;
     
-    [SerializeField]
-    private Transform player;
+    private void Start()
+    {
+        GetComponents();
+    }
 
-    void Update() {
-        transform.position = player.transform.position;
+    private void GetComponents()
+    {
+        playerPosition = GameObject.FindWithTag("Player").transform;
+    }
+
+    void FixedUpdate() {
+        transform.position = playerPosition.transform.position;
     }
 }

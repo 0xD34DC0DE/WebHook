@@ -9,11 +9,11 @@ public class MainMenuUI : MonoBehaviour
 
     private void Start()
     {
-        InitializeComponents();
+        GetComponents();
         SetListeners();
     }
 
-    private void InitializeComponents()
+    private void GetComponents()
     {
         _canvas = GetComponent<Canvas>();
         _playButton = GameObject.Find("PlayButton").GetComponent<Button>();
