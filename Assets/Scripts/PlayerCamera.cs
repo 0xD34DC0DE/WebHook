@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    private Transform playerPosition;
-    
-    private void Start()
-    {
-        GetComponents();
-    }
+    [SerializeField]
+    private Transform playerHead;
 
-    private void GetComponents()
-    {
-        playerPosition = GameObject.FindWithTag("Player").transform;
-    }
-
-    void FixedUpdate() {
-        transform.position = playerPosition.transform.position;
+    void Update() {
+        transform.position = playerHead.transform.position;
     }
 }
