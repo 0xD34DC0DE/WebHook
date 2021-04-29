@@ -134,7 +134,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13674908}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -167,7 +167,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 179232770}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -464,7 +464,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262493053}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -691,7 +691,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363317647}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -972,7 +972,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446276509}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1105,7 +1105,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 730217172}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1206,9 +1206,9 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &742550605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,6 +1223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCamera: {fileID: 1909217786}
   _orientation: {fileID: 747050126}
+  _lerpSpeed: 20
 --- !u!136 &742550606
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1230,7 +1231,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742550603}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.7
@@ -1722,7 +1723,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250533204}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -1775,7 +1776,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305385574}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1868,7 +1869,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496182160}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2125,7 +2126,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1645570912}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2218,7 +2219,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671592172}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2311,7 +2312,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681697316}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 31d7409f20544c74d90ac7993e952874, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2477,7 +2478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d7e2798f43b544da2d4e032f9e5e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1894982610}
+  playerHead: {fileID: 1894982610}
 --- !u!4 &1909217786
 Transform:
   m_ObjectHideFlags: 0

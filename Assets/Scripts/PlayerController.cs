@@ -17,6 +17,7 @@ public class PlayerController : Singleton<PlayerController>
     private const float Speed = 700f;
     private const float RunningSpeed = 200f;
     private const float JumpPower = 4f;
+    private const float NoClipSpeed = 100.0f;
 
     private const float MinVelMagForOppositeMovement = 0.01f ;
     private const float OppositeMovementMultiplier = 0.175f;
@@ -24,6 +25,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private float xInput = 0.0f;
     private float yInput = 0.0f;
+    private bool isJumping = false;
+    private bool isRunning = false;
 
     private float _pitch;
     private float _yaw;
@@ -52,13 +55,15 @@ public class PlayerController : Singleton<PlayerController>
     private void FixedUpdate()
     {
         //Jump();
-        Movement();
+        if(_rigidbody.isKinematic)
+            Noclip();
+        else
+            Movement();
     }
     
     public void Update()
     {
         CheckInput();
-        
     }
 
     private void LateUpdate()
@@ -77,21 +82,11 @@ public class PlayerController : Singleton<PlayerController>
         yInput = Input.GetAxisRaw("Vertical");
     }
 
-    private void Move()
-    {
-        _translationZ = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
-        _translationX = Input.GetAxis("Horizontal") * Time.deltaTime * Speed;
-        _translationY = _rigidbody.velocity.y;
-        _runSpeed = Input.GetAxis("Run") * Time.deltaTime * RunningSpeed;
-
-        if (_rigidbody.isKinematic)
-            Noclip();
-        else
-            Walk();
-    }
-
     private void Noclip()
     {
+        _translationZ = yInput * Time.deltaTime * NoClipSpeed;
+        _translationX = xInput * Time.deltaTime * NoClipSpeed;
+        
         transform.position = Vector3.Lerp(transform.position, transform.position + ((_translationZ * _camera.transform.forward) + 
                 (_translationX *_camera.transform.right)),  _lerpSpeed);
     }
