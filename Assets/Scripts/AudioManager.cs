@@ -32,7 +32,7 @@ public class AudioManager : Singleton<AudioManager>
     public void PlayMusic(AudioClip audioClip)
     {
         if (GameManager._instance.isGamePaused) return;
-        
+        if (_audioSource == null){GetComponents(); PlayMusic(audioClip); return; }
         float audioClipLength = audioClip.length;
         _audioSource.clip = audioClip;
         _audioSource.volume = 0.2f;
