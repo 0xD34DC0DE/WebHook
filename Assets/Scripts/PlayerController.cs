@@ -14,19 +14,22 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float _lerpSpeed = 20f;
 
     private const float RotationSpeed = 100f;
-    private const float Speed = 700f;
-    private const float RunningSpeed = 200f;
-    private const float JumpPower = 4f;
+    private const float Speed = 500f;
+    private const float RunningSpeed = 1000f;
+    private const float JumpPower = 200f;
     private const float NoClipSpeed = 100.0f;
 
     private const float MinVelMagForOppositeMovement = 0.01f ;
-    private const float OppositeMovementMultiplier = 0.175f;
+    private const float OppositeMovementMultiplier = 0.2f;
     private const float MaxSpeed = 300.0f;
 
     private float xInput = 0.0f;
     private float yInput = 0.0f;
     private bool isJumping = false;
     private bool isRunning = false;
+
+    private bool hasJumped = false;
+    private const float jumpCooldown = 1.0f;
 
     private float _pitch;
     private float _yaw;
@@ -54,7 +57,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FixedUpdate()
     {
-        //Jump();
+        Jump();
         if(_rigidbody.isKinematic)
             Noclip();
         else
@@ -80,6 +83,9 @@ public class PlayerController : Singleton<PlayerController>
 
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
+        
+        isJumping = Input.GetButton("Jump");
+        isRunning = Input.GetKey(KeyCode.LeftShift);
     }
 
     private void Noclip()
@@ -91,34 +97,26 @@ public class PlayerController : Singleton<PlayerController>
                 (_translationX *_camera.transform.right)),  _lerpSpeed);
     }
 
-    private void Walk()
-    {
-        if (IsRunning())
-            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
-                                  (_orientation.forward * _runSpeed) + (Vector3.up * _translationY);
-        else
-            _rigidbody.velocity = (_orientation.forward * _translationZ) + (_orientation.right * _translationX) +
-                                  (Vector3.up * _translationY);
-    }
-
     private void Jump()
     {
-        if (Input.GetKey(KeyCode.Space) && IsOnGround())
+        if (isJumping && !hasJumped && IsOnGround())
         {
-            _rigidbody.velocity = Vector3.up * JumpPower;
+            _rigidbody.AddForce(Vector2.up * JumpPower * 1.5f);
+            hasJumped = true;
+            Invoke("ResetJump", jumpCooldown);
         }
+    }
+
+    private void ResetJump()
+    {
+        hasJumped = false;
     }
 
     private bool IsOnGround()
     {
         return Physics.Raycast(transform.position, Vector3.down, 1.5f);
     }
-
-    private bool IsRunning()
-    {
-        return Input.GetKey(KeyCode.LeftShift) && IsWalking();
-    }
-
+    
     private bool IsWalking()
     {
         return Input.GetKey(KeyCode.W);
@@ -154,10 +152,13 @@ public class PlayerController : Singleton<PlayerController>
         if (xInput < 0 && xMag < -MaxSpeed) xInput = 0;
         if (yInput > 0 && yMag > MaxSpeed) yInput = 0;
         if (yInput < 0 && yMag < -MaxSpeed) yInput = 0;
+
+        float totalSpeed = Speed;
+        totalSpeed += (isRunning) ? RunningSpeed : 0f;
         
         //Apply forces to move player
-        _rigidbody.AddForce(_orientation.transform.forward * yInput * Speed * Time.deltaTime);
-        _rigidbody.AddForce(_orientation.transform.right * xInput * Speed * Time.deltaTime);
+        _rigidbody.AddForce(_orientation.transform.forward * yInput * totalSpeed * Time.deltaTime);
+        _rigidbody.AddForce(_orientation.transform.right * xInput * totalSpeed * Time.deltaTime);
     }
     
     private Vector2 RelativeVelocityToCamera() {
