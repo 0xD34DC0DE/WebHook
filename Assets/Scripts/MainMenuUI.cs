@@ -1,29 +1,46 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MainMenuUI : MonoBehaviour
+
+public class MainMenuUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Canvas _canvas;
     private Button _playButton;
-    private Button _quitButton;
+    private Button _exitButton;
+    private GameObject _latestSelection;
+    private const int FontSizeSelected = 24;
+    private const int DefaultFontSize = 23;
 
     private void Start()
     {
         GetComponents();
         SetListeners();
+        AudioManager._instance.PlayMusic(Resources.Load<AudioClip>("Music/music_2"));
+    }
+
+    public void OnPointerEnter(PointerEventData pointerEventData)
+    {
+        if (_latestSelection == pointerEventData.pointerCurrentRaycast.gameObject) return;
+        _latestSelection = pointerEventData.pointerCurrentRaycast.gameObject;
+        _latestSelection.GetComponent<Text>().fontSize = FontSizeSelected;
+    }
+    
+    public void OnPointerExit(PointerEventData pointerEventData)
+    {
+        _latestSelection.GetComponent<Text>().fontSize = DefaultFontSize;
+        _latestSelection = null;
     }
 
     private void GetComponents()
     {
-        _canvas = GetComponent<Canvas>();
-        _playButton = GameObject.Find("PlayButton").GetComponent<Button>();
-        _quitButton = GameObject.Find("QuitButton").GetComponent<Button>();
+        _playButton = GameObject.Find("Play").GetComponent<Button>();
+        _exitButton = GameObject.Find("Exit").GetComponent<Button>();
     }
 
     private void SetListeners()
     {
         _playButton.onClick.AddListener(Play);
-        _quitButton.onClick.AddListener(Quit);
+        _exitButton.onClick.AddListener(Quit);
     }
 
     private void Play()
