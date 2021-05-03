@@ -4,17 +4,19 @@ using UnityEngine;
 public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource _audioSource;
-    private bool _isMusicPlaying;
+
+    private IEnumerator _musicCoroutine;
 
     // Testing
     public AudioClip musicExample;
     public AudioClip soundEffectExample;
-    
+    public AudioClip _mainMenuMusic;
+
     private void Start()
     {
         GetComponents();
         LoadSounds();
-        GameManager._instance.OnGamePausedEvent.AddListener(PauseMusic);
+        GameManager._instance.OnGamePausedEvent.AddListener(ToggleMusic);
     }
 
     // Testing TODO: DELETE
@@ -22,8 +24,9 @@ public class AudioManager : Singleton<AudioManager>
     {
         musicExample = Resources.Load<AudioClip>("Music/music_1");
         soundEffectExample = Resources.Load<AudioClip>("SoundEffects/sound_1");
+        _mainMenuMusic = Resources.Load<AudioClip>("Music/music_2");
     }
-    
+
     private void GetComponents()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -31,20 +34,19 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlayMusic(AudioClip audioClip)
     {
-        if (GameManager._instance.isGamePaused) return;
-        if (_audioSource == null){GetComponents(); PlayMusic(audioClip); return; }
+        if (GameManager._instance.IsGamePaused()) return;
+
         float audioClipLength = audioClip.length;
+        _musicCoroutine = StopMusicOnEnd(audioClipLength);
         _audioSource.clip = audioClip;
         _audioSource.volume = 0.2f;
         _audioSource.Play();
-
-        _isMusicPlaying = true;
-        StartCoroutine(StopMusicOnEnd(audioClipLength));
+        StartCoroutine(_musicCoroutine);
     }
 
-    public void PauseMusic(bool isGamePaused)
+    public void ToggleMusic(bool isGamePaused)
     {
-        if (GameManager._instance.isGamePaused)
+        if (isGamePaused) 
             _audioSource.Pause();
         else
             _audioSource.Play();
@@ -53,19 +55,20 @@ public class AudioManager : Singleton<AudioManager>
     private IEnumerator StopMusicOnEnd(float audioClipLength)
     {
         yield return new WaitForSeconds(audioClipLength);
-        _isMusicPlaying = false;
+        _audioSource.Stop();
     }
 
     public void StopMusic()
     {
-        if (!_isMusicPlaying) return;
         _audioSource.Stop();
-        _isMusicPlaying = false;
+        _audioSource.clip = null;
+        if(_musicCoroutine != null)
+            StopCoroutine(_musicCoroutine);
     }
 
     public void PlaySoundEffect(AudioClip audioClip)
     {
-        if (GameManager._instance.isGamePaused) return;
+        if (GameManager._instance.IsGamePaused()) return;
         _audioSource.PlayOneShot(audioClip, 0.8f);
     }
 }

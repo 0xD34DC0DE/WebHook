@@ -116,11 +116,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         return Physics.Raycast(transform.position, Vector3.down, 1.5f);
     }
-    
-    private bool IsWalking()
-    {
-        return Input.GetKey(KeyCode.W);
-    }
 
     // TODO: Stop camera from going upside down
     private void Look()
@@ -139,6 +134,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Movement()
     {
+        if (_rigidbody.velocity.magnitude >= 500) return;
         //Find actual velocity relative to where player is looking
         Vector2 mag = RelativeVelocityToCamera();
         float xMag = mag.x;
@@ -168,9 +164,9 @@ public class PlayerController : Singleton<PlayerController>
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
         float v = 90 - u;
 
-        float magnitue = _rigidbody.velocity.magnitude;
-        float yMag = magnitue * Mathf.Cos(u * Mathf.Deg2Rad);
-        float xMag = magnitue * Mathf.Cos(v * Mathf.Deg2Rad);
+        float magnitude = _rigidbody.velocity.magnitude;
+        float yMag = magnitude * Mathf.Cos(u * Mathf.Deg2Rad);
+        float xMag = magnitude * Mathf.Cos(v * Mathf.Deg2Rad);
         
         return new Vector2(xMag, yMag);
     }

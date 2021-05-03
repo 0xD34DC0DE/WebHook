@@ -8,14 +8,13 @@ public class MainMenuUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private Button _playButton;
     private Button _exitButton;
     private GameObject _latestSelection;
-    private const int FontSizeSelected = 24;
-    private const int DefaultFontSize = 23;
+    private const int FontSizeSelected = 27;
+    private const int DefaultFontSize = 21;
 
     private void Start()
     {
         GetComponents();
         SetListeners();
-        AudioManager._instance.PlayMusic(Resources.Load<AudioClip>("Music/music_2"));
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
@@ -45,7 +44,7 @@ public class MainMenuUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void Play()
     {
-        LevelManager._instance.LoadScene("Scene1");
+        GameManager._instance.LoadScene1();
     }
 
     private void Quit()
