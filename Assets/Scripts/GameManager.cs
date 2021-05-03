@@ -43,7 +43,7 @@ public class GameManager : Singleton<GameManager>
 
     public String GetTimer()
     {
-        return TimeSpan.FromSeconds(_timer).ToString("hh\\:mm\\:ss\\.ff");
+        return TimeSpan.FromSeconds(_timer).ToString("hh\\:mm\\:ss\\:ff");
     }
 
     public bool IsGamePaused()
