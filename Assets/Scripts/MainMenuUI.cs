@@ -44,7 +44,7 @@ public class MainMenuUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private void Play()
     {
-        GameManager._instance.LoadScene1();
+        GameManager._instance.LoadLevel1();
     }
 
     private void Quit()

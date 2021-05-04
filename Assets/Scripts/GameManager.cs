@@ -21,17 +21,6 @@ public class GameManager : Singleton<GameManager>
             TogglePause();
         }
 
-        // Testing
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AudioManager._instance.PlayMusic(AudioManager._instance.musicExample);
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            AudioManager._instance.PlaySoundEffect(AudioManager._instance.soundEffectExample);
-        }
-        
         Tick();
     }
 
@@ -99,13 +88,13 @@ public class GameManager : Singleton<GameManager>
         AudioManager._instance.PlayMusic(AudioManager._instance._mainMenuMusic);
     }
 
-    public void LoadScene1()
+    public void LoadLevel1()
     {
         StopMusic();
-        LevelManager._instance.LoadScene("Scene1");
+        LevelManager._instance.LoadScene("Level1");
         HideCursor();
         _isInGame = true;
-        AudioManager._instance.PlayMusic(AudioManager._instance.musicExample);
+        AudioManager._instance.PlayMusic(AudioManager._instance.level1Music);
     }
 
     private void StopMusic()

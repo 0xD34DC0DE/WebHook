@@ -8,9 +8,9 @@ public class AudioManager : Singleton<AudioManager>
     private IEnumerator _musicCoroutine;
 
     // Testing
-    public AudioClip musicExample;
-    public AudioClip soundEffectExample;
+    public AudioClip level1Music;
     public AudioClip _mainMenuMusic;
+    public AudioClip _fireSoundEffect;
 
     private void Start()
     {
@@ -22,9 +22,9 @@ public class AudioManager : Singleton<AudioManager>
     // Testing TODO: DELETE
     private void LoadSounds()
     {
-        musicExample = Resources.Load<AudioClip>("Music/music_1");
-        soundEffectExample = Resources.Load<AudioClip>("SoundEffects/sound_1");
+        level1Music = Resources.Load<AudioClip>("Music/music_1");
         _mainMenuMusic = Resources.Load<AudioClip>("Music/music_2");
+        _fireSoundEffect = Resources.Load<AudioClip>("SoundEffects/virus_fire");
     }
 
     private void GetComponents()
@@ -39,7 +39,7 @@ public class AudioManager : Singleton<AudioManager>
         float audioClipLength = audioClip.length;
         _musicCoroutine = StopMusicOnEnd(audioClipLength);
         _audioSource.clip = audioClip;
-        _audioSource.volume = 0.2f;
+        _audioSource.volume = 0.1f;
         _audioSource.Play();
         StartCoroutine(_musicCoroutine);
     }
@@ -69,6 +69,6 @@ public class AudioManager : Singleton<AudioManager>
     public void PlaySoundEffect(AudioClip audioClip)
     {
         if (GameManager._instance.IsGamePaused()) return;
-        _audioSource.PlayOneShot(audioClip, 0.8f);
+        _audioSource.PlayOneShot(audioClip, 1f);
     }
 }
