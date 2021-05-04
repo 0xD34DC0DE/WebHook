@@ -14,16 +14,10 @@ public class VirusProjectile : MonoBehaviour
     {
         LoadComponents();
         AimAtPlayer();
-        StartCoroutine(SelfDestructTimer());
+        Destroy(gameObject, 10f);
         AudioManager._instance.PlaySoundEffect(AudioManager._instance._fireSoundEffect);
     }
-
-    private IEnumerator SelfDestructTimer()
-    {
-        yield return new WaitForSeconds(10);
-        SelfDestruct();
-    }
-
+    
     private void LoadComponents()
     {
         _transform = gameObject.transform;
@@ -41,16 +35,11 @@ public class VirusProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        SelfDestruct();
-    }
-
-    private void SelfDestruct()
-    {
         Destroy(gameObject);
     }
 
     private void Update()
     {
-        _transform.position += ((_transform.forward) * 50f) * Time.deltaTime; 
+        _transform.position += _transform.forward * 50f * Time.deltaTime; 
     }
 }
