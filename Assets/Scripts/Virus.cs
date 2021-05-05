@@ -6,10 +6,9 @@ using UnityEngine;
 
 public class Virus : MonoBehaviour
 {
-    private const float AggroRadius = 25f;
+    private const float AggroRadius = 50f;
     private Transform _playerTransform;
     private Transform _transform;
-    private Vector3 _latestPlayerPosition;
     [SerializeField]
     private GameObject _bullet;
 
@@ -27,9 +26,12 @@ public class Virus : MonoBehaviour
 
     private IEnumerator Fire()
     {
-        yield return new WaitForSeconds(2);
-        if(IsPlayerInRange())
-            Instantiate(_bullet, _transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(0.1f);
+        if (IsPlayerInRange())
+        {
+            Instantiate(_bullet, _transform.position + _transform.forward, Quaternion.identity);
+        }
+
         StartCoroutine(Fire());
     }
 
@@ -54,11 +56,7 @@ public class Virus : MonoBehaviour
     // Debugging
     private void OnDrawGizmos()
     {
-        if (IsPlayerInRange())
-            _latestPlayerPosition = _playerTransform.position;
-        
-        Gizmos.color = new Color(1.0f, 1.0f, 0f, 0.5f);
+        Gizmos.color = new Color(1.0f, 0f, 0f, 0.1f);
         Gizmos.DrawSphere(gameObject.transform.position, AggroRadius);
-        Debug.DrawLine(_transform.position, _latestPlayerPosition, Color.red);
     }
 }

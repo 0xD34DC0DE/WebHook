@@ -39,7 +39,7 @@ public class AudioManager : Singleton<AudioManager>
         float audioClipLength = audioClip.length;
         _musicCoroutine = StopMusicOnEnd(audioClipLength);
         _audioSource.clip = audioClip;
-        _audioSource.volume = 0.1f;
+        _audioSource.volume = 0.05f;
         _audioSource.Play();
         StartCoroutine(_musicCoroutine);
     }

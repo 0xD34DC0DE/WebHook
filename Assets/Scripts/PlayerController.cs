@@ -130,6 +130,7 @@ public class PlayerController : Singleton<PlayerController>
         
         _playerCamera.transform.localRotation = Quaternion.Euler(_pitch, _yaw, _roll);
         _orientation.transform.localRotation = Quaternion.Euler(0.0f, _yaw, 0.0f);
+
     }
 
     private void Movement()
