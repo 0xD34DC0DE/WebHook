@@ -40,6 +40,6 @@ public class VirusProjectile : MonoBehaviour
 
     private void Update()
     {
-        _transform.position += _transform.forward * 50f * Time.deltaTime; 
+        _transform.position += _transform.forward * 120f * Time.deltaTime; 
     }
 }
