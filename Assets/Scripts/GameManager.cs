@@ -94,7 +94,7 @@ public class GameManager : Singleton<GameManager>
         LevelManager._instance.LoadScene("Level1");
         HideCursor();
         _isInGame = true;
-        //AudioManager._instance.PlayMusic(AudioManager._instance.level1Music);
+        AudioManager._instance.PlayMusic(AudioManager._instance.level1Music);
     }
 
     private void StopMusic()

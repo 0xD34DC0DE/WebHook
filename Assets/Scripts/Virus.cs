@@ -52,11 +52,4 @@ public class Virus : MonoBehaviour
     {
         return (Vector3.Distance(_playerTransform.position, gameObject.transform.position) < AggroRadius);
     }
-
-    // Debugging
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(1.0f, 0f, 0f, 0.1f);
-        Gizmos.DrawSphere(gameObject.transform.position, AggroRadius);
-    }
 }
