@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class Virus : MonoBehaviour
 {
-    private const float AggroRadius = 50f;
+    [SerializeField] private float aggroRadius = 50f;
+    [SerializeField] private float fireRate = 0.1f;
+    [SerializeField] private GameObject _bullet;
     private Transform _playerTransform;
     private Transform _transform;
-    [SerializeField]
-    private GameObject _bullet;
 
     void Start()
     {
@@ -26,10 +26,10 @@ public class Virus : MonoBehaviour
 
     private IEnumerator Fire()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(fireRate);
         if (IsPlayerInRange())
         {
-            Instantiate(_bullet, _transform.position + _transform.forward, Quaternion.identity);
+            var prefab = Instantiate(_bullet, _transform.position + _transform.forward, Quaternion.identity);
         }
 
         StartCoroutine(Fire());
@@ -50,6 +50,6 @@ public class Virus : MonoBehaviour
 
     private bool IsPlayerInRange()
     {
-        return (Vector3.Distance(_playerTransform.position, gameObject.transform.position) < AggroRadius);
+        return (Vector3.Distance(_playerTransform.position, gameObject.transform.position) < aggroRadius);
     }
 }

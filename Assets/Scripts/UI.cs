@@ -6,21 +6,17 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    private Text _timer;
+    [SerializeField] private Text _timer;
+    [SerializeField] private Text _speed;
+    [SerializeField] private Rigidbody _playerRb;
     private void Start()
     {
-        LoadComponents();
+        
     }
-
-    private void LoadComponents()
-    {
-        _timer = GameObject.Find("Timer").GetComponent<Text>();
-    }
-
 
     private void Update()
     {
-        if(_timer == null){ LoadComponents();}
         _timer.text = GameManager._instance.GetTimer();
+        _speed.text = "SPEED: " + Mathf.Round(_playerRb.velocity.magnitude);
     }
 }

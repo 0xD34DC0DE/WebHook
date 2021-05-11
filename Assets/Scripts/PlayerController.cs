@@ -1,17 +1,16 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : Singleton<PlayerController>
 {
     private Camera _camera;
     private Rigidbody _rigidbody;
+    private CapsuleCollider _capsuleCollider;
 
-    [SerializeField]
-    private Transform _playerCamera;
-    [SerializeField]
-    private Transform _orientation;
-
-    [SerializeField] private float _lerpSpeed = 20f;
+    [SerializeField] private Transform playerCamera;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private float lerpSpeed = 20f;
 
     private const float RotationSpeed = 100f;
     private const float Speed = 500f;
@@ -23,13 +22,14 @@ public class PlayerController : Singleton<PlayerController>
     private const float OppositeMovementMultiplier = 0.2f;
     private const float MaxSpeed = 300.0f;
 
-    private float xInput = 0.0f;
-    private float yInput = 0.0f;
-    private bool isJumping = false;
-    private bool isRunning = false;
-
-    private bool hasJumped = false;
-    private const float jumpCooldown = 1.0f;
+    private float _xInput = 0.0f;
+    private float _yInput = 0.0f;
+    private bool _isJumping = false;
+    private bool _isRunning = false;
+    private bool _isCrouching = false;
+    
+    private bool _hasJumped = false;
+    private const float JumpCooldown = 1.0f;
 
     private float _pitch;
     private float _yaw;
@@ -53,17 +53,24 @@ public class PlayerController : Singleton<PlayerController>
     {
         _camera = Camera.main;
         _rigidbody = GetComponent<Rigidbody>();
+        _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     private void FixedUpdate()
     {
         Jump();
+        Crouch();
         if(_rigidbody.isKinematic)
             Noclip();
         else
             Movement();
     }
-    
+
+    private void Crouch()
+    {
+        _capsuleCollider.radius = _isCrouching ? 0.1f : 1.0f;
+    }
+
     public void Update()
     {
         CheckInput();
@@ -80,36 +87,47 @@ public class PlayerController : Singleton<PlayerController>
         {
             _rigidbody.isKinematic = !_rigidbody.isKinematic;
         }
-
-        xInput = Input.GetAxisRaw("Horizontal");
-        yInput = Input.GetAxisRaw("Vertical");
         
-        isJumping = Input.GetButton("Jump");
-        isRunning = Input.GetKey(KeyCode.LeftShift);
+        _isCrouching = Input.GetKey(KeyCode.LeftControl) && !_isCrouching ? true : false;
+        
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            _isCrouching = true;
+        }
+        else
+        {
+            _isCrouching = false;
+        }
+
+        _xInput = Input.GetAxisRaw("Horizontal");
+        _yInput = Input.GetAxisRaw("Vertical");
+        
+        _isJumping = Input.GetButton("Jump");
+        _isRunning = Input.GetKey(KeyCode.LeftShift);
     }
 
     private void Noclip()
     {
-        _translationZ = yInput * Time.deltaTime * NoClipSpeed;
-        _translationX = xInput * Time.deltaTime * NoClipSpeed;
+        _translationZ = _yInput * Time.deltaTime * NoClipSpeed;
+        _translationX = _xInput * Time.deltaTime * NoClipSpeed;
         
         transform.position = Vector3.Lerp(transform.position, transform.position + ((_translationZ * _camera.transform.forward) + 
-                (_translationX *_camera.transform.right)),  _lerpSpeed);
+                (_translationX *_camera.transform.right)),  lerpSpeed);
     }
 
     private void Jump()
     {
-        if (isJumping && !hasJumped && IsOnGround())
+        if (_isJumping && !_hasJumped && IsOnGround())
         {
             _rigidbody.AddForce(Vector2.up * JumpPower * 1.5f);
-            hasJumped = true;
-            Invoke("ResetJump", jumpCooldown);
+            _hasJumped = true;
+            Invoke("ResetJump", JumpCooldown);
         }
     }
 
     private void ResetJump()
     {
-        hasJumped = false;
+        _hasJumped = false;
     }
 
     private bool IsOnGround()
@@ -124,12 +142,12 @@ public class PlayerController : Singleton<PlayerController>
         _pitch = Mathf.Clamp(_pitch, -90f, 90f);
         
         _yaw = Input.GetAxis("Mouse X") * Time.deltaTime * RotationSpeed;
-        _yaw = _playerCamera.transform.localRotation.eulerAngles.y + _yaw;
+        _yaw = playerCamera.transform.localRotation.eulerAngles.y + _yaw;
         
         _roll = 0f;
         
-        _playerCamera.transform.localRotation = Quaternion.Euler(_pitch, _yaw, _roll);
-        _orientation.transform.localRotation = Quaternion.Euler(0.0f, _yaw, 0.0f);
+        playerCamera.transform.localRotation = Quaternion.Euler(_pitch, _yaw, _roll);
+        orientation.transform.localRotation = Quaternion.Euler(0.0f, _yaw, 0.0f);
 
     }
 
@@ -143,23 +161,23 @@ public class PlayerController : Singleton<PlayerController>
 
 
         //Counteract sliding and sloppy movement
-        OppositeMovement(xInput, yInput, mag);
+        OppositeMovement(_xInput, _yInput, mag);
         
-        if (xInput > 0 && xMag > MaxSpeed) xInput= 0;
-        if (xInput < 0 && xMag < -MaxSpeed) xInput = 0;
-        if (yInput > 0 && yMag > MaxSpeed) yInput = 0;
-        if (yInput < 0 && yMag < -MaxSpeed) yInput = 0;
+        if (_xInput > 0 && xMag > MaxSpeed) _xInput= 0;
+        if (_xInput < 0 && xMag < -MaxSpeed) _xInput = 0;
+        if (_yInput > 0 && yMag > MaxSpeed) _yInput = 0;
+        if (_yInput < 0 && yMag < -MaxSpeed) _yInput = 0;
 
         float totalSpeed = Speed;
-        totalSpeed += (isRunning) ? RunningSpeed : 0f;
+        totalSpeed += (_isRunning) ? RunningSpeed : 0f;
         
         //Apply forces to move player
-        _rigidbody.AddForce(_orientation.transform.forward * yInput * totalSpeed * Time.deltaTime);
-        _rigidbody.AddForce(_orientation.transform.right * xInput * totalSpeed * Time.deltaTime);
+        _rigidbody.AddForce(orientation.transform.forward * _yInput * totalSpeed * Time.deltaTime);
+        _rigidbody.AddForce(orientation.transform.right * _xInput * totalSpeed * Time.deltaTime);
     }
     
     private Vector2 RelativeVelocityToCamera() {
-        float lookAngle = _orientation.transform.eulerAngles.y;
+        float lookAngle = orientation.transform.eulerAngles.y;
         float moveAngle = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
@@ -176,10 +194,10 @@ public class PlayerController : Singleton<PlayerController>
         
         //Counter movement
         if (Math.Abs(mag.x) > MinVelMagForOppositeMovement && Math.Abs(inputX) < 0.05f || (mag.x < -MinVelMagForOppositeMovement && inputX > 0) || (mag.x > MinVelMagForOppositeMovement && inputX < 0)) {
-            _rigidbody.AddForce(Speed * _orientation.transform.right * Time.deltaTime * -mag.x * OppositeMovementMultiplier);
+            _rigidbody.AddForce(Speed * orientation.transform.right * Time.deltaTime * -mag.x * OppositeMovementMultiplier);
         }
         if (Math.Abs(mag.y) > MinVelMagForOppositeMovement && Math.Abs(inputY) < 0.05f || (mag.y < -MinVelMagForOppositeMovement && inputY > 0) || (mag.y > MinVelMagForOppositeMovement && inputY < 0)) {
-            _rigidbody.AddForce(Speed * _orientation.transform.forward * Time.deltaTime * -mag.y * OppositeMovementMultiplier);
+            _rigidbody.AddForce(Speed * orientation.transform.forward * Time.deltaTime * -mag.y * OppositeMovementMultiplier);
         }
         
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.

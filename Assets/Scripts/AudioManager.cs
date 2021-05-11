@@ -7,24 +7,10 @@ public class AudioManager : Singleton<AudioManager>
 
     private IEnumerator _musicCoroutine;
 
-    // Testing
-    public AudioClip level1Music;
-    public AudioClip _mainMenuMusic;
-    public AudioClip _fireSoundEffect;
-
     private void Start()
     {
         GetComponents();
-        LoadSounds();
         GameManager._instance.OnGamePausedEvent.AddListener(ToggleMusic);
-    }
-
-    // Testing TODO: DELETE
-    private void LoadSounds()
-    {
-        level1Music = Resources.Load<AudioClip>("Music/music_1");
-        _mainMenuMusic = Resources.Load<AudioClip>("Music/music_2");
-        _fireSoundEffect = Resources.Load<AudioClip>("SoundEffects/virus_fire");
     }
 
     private void GetComponents()

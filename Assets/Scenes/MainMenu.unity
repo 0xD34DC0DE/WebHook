@@ -245,9 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b874181758057a94dbfef9537b7a6133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicExample: {fileID: 0}
-  soundEffectExample: {fileID: 0}
-  _mainMenuMusic: {fileID: 0}
 --- !u!82 &268873634
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1594,6 +1591,8 @@ MonoBehaviour:
   OnGamePausedEvent:
     m_PersistentCalls:
       m_Calls: []
+  mainMenuMusic: {fileID: 8300000, guid: ab4949ba83d5f8445bd4af7dc910705e, type: 3}
+  level1Music: {fileID: 8300000, guid: ac38d4315e523ce479caf6d2669d45e6, type: 3}
 --- !u!4 &1818396791
 Transform:
   m_ObjectHideFlags: 0

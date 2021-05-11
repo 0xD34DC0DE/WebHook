@@ -8,6 +8,8 @@ public class GameManager : Singleton<GameManager>
     private bool _isInGame = false;
     private float _timer;
     private bool _isTimerPaused;
+    [SerializeField] private AudioClip mainMenuMusic;
+    [SerializeField] private AudioClip level1Music;
 
     private void Start()
     {
@@ -85,7 +87,7 @@ public class GameManager : Singleton<GameManager>
         UnpauseGame();
         ShowCursor();
         _isInGame = false;
-        AudioManager._instance.PlayMusic(AudioManager._instance._mainMenuMusic);
+        AudioManager._instance.PlayMusic(mainMenuMusic);
     }
 
     public void LoadLevel1()
@@ -94,7 +96,7 @@ public class GameManager : Singleton<GameManager>
         LevelManager._instance.LoadScene("Level1");
         HideCursor();
         _isInGame = true;
-        AudioManager._instance.PlayMusic(AudioManager._instance.level1Music);
+        //AudioManager._instance.PlayMusic(level1Music);
     }
 
     private void StopMusic()
