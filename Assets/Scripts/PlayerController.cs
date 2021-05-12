@@ -41,6 +41,13 @@ public class PlayerController : Singleton<PlayerController>
     private float _runSpeed;
 
     private bool _noclip;
+
+    private Collision _lastCollision;
+    private Collision _currentCollision;
+    private Vector3 _lastCollisionPoint;
+    private Vector3 _lastCollisionNormal;
+    private Vector3 _currentCollisionPoint;
+    private Vector3 _currentCollisionNormal;
     
     void Start()
     {
@@ -74,6 +81,10 @@ public class PlayerController : Singleton<PlayerController>
     public void Update()
     {
         CheckInput();
+        if(_lastCollision != null)
+            Debug.DrawRay(_lastCollisionPoint, _lastCollisionNormal, Color.magenta);
+        if(_currentCollision != null)
+            Debug.DrawRay(_currentCollisionPoint, _currentCollisionNormal, Color.yellow);
     }
 
     private void LateUpdate()
@@ -117,11 +128,18 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Jump()
     {
-        if (_isJumping && !_hasJumped && IsOnGround())
+        if (_isJumping && !_hasJumped && (IsOnGround() || CanWallJump()))
         {
-            _rigidbody.AddForce(Vector2.up * JumpPower * 1.5f);
+            if (CanWallJump())
+            {
+                _lastCollision = _currentCollision;
+                _lastCollisionNormal = _currentCollisionNormal;
+                _lastCollisionPoint = _currentCollisionPoint;
+            }
+            
+            _rigidbody.AddForce(Vector2.up * (JumpPower * 1.5f));
             _hasJumped = true;
-            Invoke("ResetJump", JumpCooldown);
+            Invoke(nameof(ResetJump), JumpCooldown);
         }
     }
 
@@ -206,5 +224,42 @@ public class PlayerController : Singleton<PlayerController>
             Vector3 n = rb.velocity.normalized * maxSpeed;
             rb.velocity = new Vector3(n.x, fallingSpeed, n.z);
         }*/
+    }
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer.Equals(LayerMask.NameToLayer("World")))
+        {
+            _currentCollision = other;
+            // This is dumb...
+            _currentCollisionPoint = other.GetContact(0).point;
+            _currentCollisionNormal = other.GetContact(0).normal;
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.layer.Equals(LayerMask.NameToLayer("World")))
+        {
+            _lastCollision = _currentCollision;
+            // Dumb stuff again
+            _lastCollisionPoint = _currentCollisionPoint;
+            _lastCollisionNormal = _currentCollisionNormal;
+            _currentCollision = null;
+        }
+    }
+
+    private bool CanWallJump()
+    {
+        switch (_lastCollision)
+        {
+            case null when _currentCollision == null:
+                return false;
+            case null when _currentCollision != null:
+                return true;
+        }
+        
+        return _lastCollisionNormal != _currentCollisionNormal;
     }
 }
