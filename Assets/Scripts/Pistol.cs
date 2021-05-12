@@ -4,6 +4,7 @@ using UnityEngine;
 public class Pistol : MonoBehaviour
 {
     [SerializeField] private GameObject pistolProjectile;
+    [SerializeField] private Collider playerCollider;
     private Animator _animator;
     private bool _canFire = true;
     private const float Firedelay = 0.3f;
@@ -58,7 +59,8 @@ public class Pistol : MonoBehaviour
     {
         _canFire = false;
         _animator.SetTrigger("Fire");
-        Instantiate(pistolProjectile, gameObject.transform);
+        GameObject pistolProjectileInstance = Instantiate(pistolProjectile, gameObject.transform);
+        pistolProjectileInstance.GetComponent<PistolProjectile>().SetPlayerCollider(playerCollider);
         StartCoroutine(ResetCooldown());
     }
 }

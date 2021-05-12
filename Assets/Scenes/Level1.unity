@@ -178,7 +178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &58209039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -718,6 +718,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Virus03
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ba8cbb150c986d5498d8687306ba6acb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Virus
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba8cbb150c986d5498d8687306ba6acb, type: 3}
 --- !u!1 &234962804 stripped
@@ -847,6 +852,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Virus01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 98f7da486c5905040a4851d53ed8f18d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Virus
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98f7da486c5905040a4851d53ed8f18d, type: 3}
@@ -1037,6 +1047,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Virus02
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7ce18ee116513c944841c91cdf1565cb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Virus
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ce18ee116513c944841c91cdf1565cb, type: 3}
@@ -7401,6 +7416,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: virus04
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5f8bd0b38217ca24082932956c37a6aa,
+        type: 3}
+      propertyPath: m_TagString
+      value: Virus
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f8bd0b38217ca24082932956c37a6aa, type: 3}
 --- !u!1 &1810338226
@@ -9977,6 +9997,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
       objectReference: {fileID: 0}
+    - target: {fileID: 2769494731887886699, guid: 65a6cb42affcf7242a730b45a6c4883f,
+        type: 3}
+      propertyPath: playerCollider
+      value: 
+      objectReference: {fileID: 742550606}
     - target: {fileID: 2769494731887886699, guid: 65a6cb42affcf7242a730b45a6c4883f,
         type: 3}
       propertyPath: pistolProjectile
