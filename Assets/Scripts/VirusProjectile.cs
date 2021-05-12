@@ -30,9 +30,13 @@ public class VirusProjectile : MonoBehaviour
             _playerTransform.position.z - _transform.position.z));
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            other.gameObject.GetComponent<Player>().InflictDamage();
+        }
     }
 
     private void Update()

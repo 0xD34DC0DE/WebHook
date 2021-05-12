@@ -20,14 +20,10 @@ public class Player : Singleton<Player>
         
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void InflictDamage()
     {
-        if (other.gameObject.tag.Equals("AlienProjectile"))
-        {
-            lives--;
-            OnPlayerHitTaken.Invoke(lives);
-            Destroy(other.gameObject);
-            AudioManager._instance.PlaySoundEffect(_hurtSoundEffect);
-        }
+        lives--;
+        OnPlayerHitTaken.Invoke(lives);
+        AudioManager._instance.PlaySoundEffect(_hurtSoundEffect);
     }
 }
