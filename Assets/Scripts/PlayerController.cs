@@ -10,12 +10,15 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform orientation;
+    [SerializeField] private Transform wallJumpBoostLocation;
     [SerializeField] private float lerpSpeed = 20f;
+    [SerializeField] private float additionalGravity = 2f;
 
     private const float RotationSpeed = 100f;
     private const float Speed = 500f;
     private const float RunningSpeed = 1000f;
     private const float JumpPower = 200f;
+    private const float WallJumpPower = 300f;
     private const float NoClipSpeed = 100.0f;
 
     private const float MinVelMagForOppositeMovement = 0.01f ;
@@ -135,9 +138,11 @@ public class PlayerController : Singleton<PlayerController>
                 _lastCollision = _currentCollision;
                 _lastCollisionNormal = _currentCollisionNormal;
                 _lastCollisionPoint = _currentCollisionPoint;
+                
+                _rigidbody.AddExplosionForce(WallJumpPower, wallJumpBoostLocation.position, 1.0f);
             }
             
-            _rigidbody.AddForce(Vector2.up * (JumpPower * 1.5f));
+            _rigidbody.AddForce((Vector3.up + orientation.forward * 0.5f) * (JumpPower * 1.5f));
             _hasJumped = true;
             Invoke(nameof(ResetJump), JumpCooldown);
         }
@@ -172,6 +177,10 @@ public class PlayerController : Singleton<PlayerController>
     private void Movement()
     {
         if (_rigidbody.velocity.magnitude >= 500) return;
+        
+        if(!IsOnGround())
+            _rigidbody.AddForce(Vector3.down * additionalGravity);
+        
         //Find actual velocity relative to where player is looking
         Vector2 mag = RelativeVelocityToCamera();
         float xMag = mag.x;
