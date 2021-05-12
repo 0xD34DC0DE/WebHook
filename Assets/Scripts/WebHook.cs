@@ -10,7 +10,8 @@ public class WebHook : MonoBehaviour
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform playerRigidBodyGameObject;
     [SerializeField] private GameObject targetingPrefab;
-    
+    [SerializeField] private GameObject hookLineObject;
+
     [Header("Gameplay settings")]
     [SerializeField] private float maxDistance = 500.0f;
     [SerializeField] private float minDistance = 10.0f;
@@ -22,6 +23,7 @@ public class WebHook : MonoBehaviour
     [SerializeField] private float massScale = 4.5f;
 
     private GameObject _targetingPrefabInstance;
+    private GameObject _hookLineObjectInstance;
     
     private RaycastHit _raycastHit;
     private SpringJoint _hookJoint;
@@ -60,6 +62,10 @@ public class WebHook : MonoBehaviour
         if (_isHooked)
         {
             DrawHook();
+        } else if (_hookLineObjectInstance != null)
+        {
+            Destroy(_hookLineObjectInstance);
+            _hookLineObjectInstance = null;
         }
         
         if (!_isHooked && _hookJoint != null)
@@ -163,7 +169,25 @@ public class WebHook : MonoBehaviour
 
     private void DrawHook()
     {
+        if (_hookLineObjectInstance == null)
+        {
+            _hookLineObjectInstance = Instantiate(hookLineObject);
+        }
+        
+        UpdateHookTransform();
         Debug.DrawLine(hookStartVisualTransform.position, _hookPoint, Color.magenta);
+    }
+    
+    private void UpdateHookTransform()
+    {
+        Vector3 position = Vector3.Lerp(hookStartVisualTransform.position, _hookPoint, 0.5f);
+        _hookLineObjectInstance.transform.position = position;
+
+        float distance = Vector3.Distance(hookStartVisualTransform.position, _hookPoint);
+        _hookLineObjectInstance.transform.localScale = new Vector3(0.2f, distance * 0.5f, 0.2f);
+        
+        Vector3 direction = Vector3.Normalize(hookStartVisualTransform.position - _hookPoint);
+        _hookLineObjectInstance.transform.rotation = Quaternion.LookRotation(direction) * Quaternion.FromToRotation(Vector3.down, Vector3.forward);
     }
     
 }
