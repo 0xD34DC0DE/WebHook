@@ -8,7 +8,9 @@ public class Virus : MonoBehaviour
 {
     [SerializeField] private float aggroRadius = 50f;
     [SerializeField] private float fireRate = 0.1f;
-    [SerializeField] private GameObject _bullet;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private AudioClip hitMarkSound;
+    private int _lives;
     private Transform _playerTransform;
     private Transform _transform;
 
@@ -16,6 +18,7 @@ public class Virus : MonoBehaviour
     {
         LoadComponents();
         StartCoroutine(Fire());
+        _lives = 2;
     }
 
     void LoadComponents()
@@ -29,7 +32,7 @@ public class Virus : MonoBehaviour
         yield return new WaitForSeconds(fireRate);
         if (IsPlayerInRange())
         {
-            var prefab = Instantiate(_bullet, _transform.position + _transform.forward, Quaternion.identity);
+            var prefab = Instantiate(bullet, _transform.position + _transform.forward, Quaternion.identity);
         }
 
         StartCoroutine(Fire());
@@ -39,6 +42,19 @@ public class Virus : MonoBehaviour
     {
         if (IsPlayerInRange())
             LookAtPlayer();
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.tag.Equals("PlayerProjectile"))
+        {
+            _lives--;
+            Destroy(collider.gameObject);
+            UI._instance.ShowHitMark();
+            AudioManager._instance.PlaySoundEffect(hitMarkSound);
+            if(_lives == 0)
+                Destroy(gameObject);
+        }
     }
 
     private void LookAtPlayer()

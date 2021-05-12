@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class EventManager : Singleton<EventManager>
@@ -21,7 +22,23 @@ public class EventManager : Singleton<EventManager>
     };
 
     [Serializable]
-    public class OnSceneUnloaded: UnityEvent<string>
+    public class OnSceneUnloaded : UnityEvent<string>
+    {
+    };
+
+    /*
+        Player
+    */
+    [Serializable]
+    public class OnPlayerHitTaken : UnityEvent<int>
+    {
+    };
+
+    /*
+        Virus
+    */
+    [Serializable]
+    public class OnVirusHitTaken : UnityEvent
     {
     };
 }

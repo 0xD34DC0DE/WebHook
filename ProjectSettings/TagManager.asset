@@ -6,6 +6,8 @@ TagManager:
   tags:
   - UI
   - Level
+  - AlienProjectile
+  - PlayerProjectile
   layers:
   - Default
   - TransparentFX

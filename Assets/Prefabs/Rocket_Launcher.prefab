@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireSoundEffect: {fileID: 8300000, guid: b8a7a38dc762d1f4baf8d8a649cb7ae1, type: 3}
-  _projectile: {fileID: 4176832273861672296, guid: 41de65de5862e154da84267c28c42cb6,
+  _projectile: {fileID: 5546311555434022658, guid: db951c3a16113b0499f9a68fb2d85821,
     type: 3}
 --- !u!1 &5823206450885255189
 GameObject:
