@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -177,8 +178,9 @@ public class PlayerController : Singleton<PlayerController>
     private void Movement()
     {
         if (_rigidbody.velocity.magnitude >= 500) return;
-        
-        if(!IsOnGround())
+
+        var isOnGround = IsOnGround();
+        if(!isOnGround)
             _rigidbody.AddForce(Vector3.down * additionalGravity);
         
         //Find actual velocity relative to where player is looking
@@ -197,10 +199,12 @@ public class PlayerController : Singleton<PlayerController>
 
         float totalSpeed = Speed;
         totalSpeed += (_isRunning) ? RunningSpeed : 0f;
-        
+
+        float multiplier = isOnGround ? 1.0f : 0.5f;
+
         //Apply forces to move player
-        _rigidbody.AddForce(orientation.transform.forward * _yInput * totalSpeed * Time.deltaTime);
-        _rigidbody.AddForce(orientation.transform.right * _xInput * totalSpeed * Time.deltaTime);
+        _rigidbody.AddForce(orientation.transform.forward * _yInput * totalSpeed * Time.deltaTime * multiplier);
+        _rigidbody.AddForce(orientation.transform.right * _xInput * totalSpeed * Time.deltaTime * multiplier);
     }
     
     private Vector2 RelativeVelocityToCamera() {
@@ -268,6 +272,6 @@ public class PlayerController : Singleton<PlayerController>
                 return true;
         }
         
-        return _lastCollisionNormal != _currentCollisionNormal;
+        return _lastCollisionNormal != _currentCollisionNormal && Vector3.Angle(_currentCollisionNormal, Vector3.up) > 70.0f;
     }
 }
