@@ -41,6 +41,13 @@ public class PlayerController : Singleton<PlayerController>
     private float _runSpeed;
 
     private bool _noclip;
+
+    private Collision _lastCollision;
+    private Collision _currentCollision;
+    private Vector3 _lastCollisionPoint;
+    private Vector3 _lastCollisionNormal;
+    private Vector3 _currentCollisionPoint;
+    private Vector3 _currentCollisionNormal;
     
     void Start()
     {
@@ -121,7 +128,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Jump()
     {
-        if (isJumping && !hasJumped && (IsOnGround() || CanWallJump()))
+        if (_isJumping && !_hasJumped && (IsOnGround() || CanWallJump()))
         {
             if (CanWallJump())
             {
@@ -131,8 +138,8 @@ public class PlayerController : Singleton<PlayerController>
             }
             
             _rigidbody.AddForce(Vector2.up * (JumpPower * 1.5f));
-            hasJumped = true;
-            Invoke(nameof(ResetJump), jumpCooldown);
+            _hasJumped = true;
+            Invoke(nameof(ResetJump), JumpCooldown);
         }
     }
 
@@ -235,7 +242,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (other.gameObject.layer.Equals(LayerMask.NameToLayer("World")))
         {
-            Debug.Log(other.gameObject.name);
             _lastCollision = _currentCollision;
             // Dumb stuff again
             _lastCollisionPoint = _currentCollisionPoint;
