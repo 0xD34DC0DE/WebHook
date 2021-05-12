@@ -29,7 +29,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool isRunning = false;
 
     private bool hasJumped = false;
-    private const float jumpCooldown = 1.0f;
+    private const float jumpCooldown = 0.25f;
 
     private float _pitch;
     private float _yaw;
@@ -41,8 +41,16 @@ public class PlayerController : Singleton<PlayerController>
     private float _runSpeed;
 
     private bool _noclip;
-    
-    void Start()
+
+    // Need to keep track of position and normals because unity keeps updating collision objects
+    private Collision _lastCollision;
+    private Vector3 _lastCollisionPoint;
+    private Vector3 _lastCollisionNormal;
+    private Collision _currentCollision;
+    private Vector3 _currentCollisionPoint;
+    private Vector3 _currentCollisionNormal;
+
+    private void Start()
     {
         GetComponents();
         Cursor.lockState = CursorLockMode.Locked;
@@ -67,6 +75,10 @@ public class PlayerController : Singleton<PlayerController>
     public void Update()
     {
         CheckInput();
+        if(_lastCollision != null)
+            Debug.DrawRay(_lastCollisionPoint, _lastCollisionNormal, Color.magenta);
+        if(_currentCollision != null)
+            Debug.DrawRay(_currentCollisionPoint, _currentCollisionNormal, Color.yellow);
     }
 
     private void LateUpdate()
@@ -92,18 +104,27 @@ public class PlayerController : Singleton<PlayerController>
     {
         _translationZ = yInput * Time.deltaTime * NoClipSpeed;
         _translationX = xInput * Time.deltaTime * NoClipSpeed;
-        
-        transform.position = Vector3.Lerp(transform.position, transform.position + ((_translationZ * _camera.transform.forward) + 
-                (_translationX *_camera.transform.right)),  _lerpSpeed);
+
+        var position = transform.position;
+        var transform1 = _camera.transform;
+        position = Vector3.Lerp(position, position + (_translationZ * transform1.forward + _translationX *transform1.right),  _lerpSpeed);
+        transform.position = position;
     }
 
     private void Jump()
     {
-        if (isJumping && !hasJumped && IsOnGround())
+        if (isJumping && !hasJumped && (IsOnGround() || CanWallJump()))
         {
-            _rigidbody.AddForce(Vector2.up * JumpPower * 1.5f);
+            if (CanWallJump())
+            {
+                _lastCollision = _currentCollision;
+                _lastCollisionNormal = _currentCollisionNormal;
+                _lastCollisionPoint = _currentCollisionPoint;
+            }
+            
+            _rigidbody.AddForce(Vector2.up * (JumpPower * 1.5f));
             hasJumped = true;
-            Invoke("ResetJump", jumpCooldown);
+            Invoke(nameof(ResetJump), jumpCooldown);
         }
     }
 
@@ -154,13 +175,14 @@ public class PlayerController : Singleton<PlayerController>
         totalSpeed += (isRunning) ? RunningSpeed : 0f;
         
         //Apply forces to move player
-        _rigidbody.AddForce(_orientation.transform.forward * yInput * totalSpeed * Time.deltaTime);
-        _rigidbody.AddForce(_orientation.transform.right * xInput * totalSpeed * Time.deltaTime);
+        _rigidbody.AddForce(_orientation.transform.forward * (yInput * totalSpeed * Time.deltaTime));
+        _rigidbody.AddForce(_orientation.transform.right * (xInput * totalSpeed * Time.deltaTime));
     }
     
     private Vector2 RelativeVelocityToCamera() {
         float lookAngle = _orientation.transform.eulerAngles.y;
-        float moveAngle = Mathf.Atan2(_rigidbody.velocity.x, _rigidbody.velocity.z) * Mathf.Rad2Deg;
+        var velocity = _rigidbody.velocity;
+        float moveAngle = Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg;
 
         float u = Mathf.DeltaAngle(lookAngle, moveAngle);
         float v = 90 - u;
@@ -188,5 +210,43 @@ public class PlayerController : Singleton<PlayerController>
             Vector3 n = rb.velocity.normalized * maxSpeed;
             rb.velocity = new Vector3(n.x, fallingSpeed, n.z);
         }*/
+    }
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer.Equals(LayerMask.NameToLayer("World")))
+        {
+            _currentCollision = other;
+            // This is dumb...
+            _currentCollisionPoint = other.GetContact(0).point;
+            _currentCollisionNormal = other.GetContact(0).normal;
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.layer.Equals(LayerMask.NameToLayer("World")))
+        {
+            Debug.Log(other.gameObject.name);
+            _lastCollision = _currentCollision;
+            // Dumb stuff again
+            _lastCollisionPoint = _currentCollisionPoint;
+            _lastCollisionNormal = _currentCollisionNormal;
+            _currentCollision = null;
+        }
+    }
+
+    private bool CanWallJump()
+    {
+        switch (_lastCollision)
+        {
+            case null when _currentCollision == null:
+                return false;
+            case null when _currentCollision != null:
+                return true;
+        }
+        
+        return _lastCollisionNormal != _currentCollisionNormal;
     }
 }
