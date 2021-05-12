@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections;
-using System.Security.Cryptography;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class VirusProjectile : MonoBehaviour
 {
     private Transform _playerTransform;
+    
     private Transform _transform;
-    private Collider _collider;
-    private AudioClip _fireSoundEffect;
+    
+    [SerializeField] private AudioClip _fireSoundEffect;
 
     void Start()
     {
         LoadComponents();
         AimAtPlayer();
         Destroy(gameObject, 10f);
-        AudioManager._instance.PlaySoundEffect(AudioManager._instance._fireSoundEffect);
+        AudioManager._instance.PlaySoundEffect(_fireSoundEffect);
     }
     
     private void LoadComponents()
     {
         _transform = gameObject.transform;
         _playerTransform = GameObject.Find("Player").GetComponent<Transform>();
-        _collider = GetComponent<Collider>();
     }
 
     private void AimAtPlayer()

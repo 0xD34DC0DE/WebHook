@@ -1,8 +1,9 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 public class Rocket : MonoBehaviour
 {
     private Rigidbody _playerRigidbody;
+    [SerializeField] private AudioClip _explosionSoundEffect;
+    [SerializeField] private GameObject _explosionEffect;
     private void Start()
     {
         Destroy(gameObject, 10f);
@@ -12,7 +13,7 @@ public class Rocket : MonoBehaviour
 
     private void Update()
     {
-        transform.position += -transform.forward * 45f * Time.deltaTime;
+        transform.position += -transform.forward * 70f * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -25,6 +26,8 @@ public class Rocket : MonoBehaviour
         if(distance < 8)
             _playerRigidbody.AddForce((distanceMul) * 700f * transform.forward);
         
+        Instantiate(_explosionEffect, transform.position, Quaternion.identity);
+        AudioManager._instance.PlaySoundEffect(_explosionSoundEffect);
         Destroy(gameObject);
     }
 }
