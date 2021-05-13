@@ -10,6 +10,7 @@ public class Virus : MonoBehaviour
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] private GameObject bullet;
     [SerializeField] private AudioClip hitMarkSound;
+    [SerializeField] private GameObject alienExplosion;
     private int _lives;
     private Transform _playerTransform;
     private Transform _transform;
@@ -51,8 +52,11 @@ public class Virus : MonoBehaviour
             _lives--;
             Destroy(collider.gameObject);
             AudioManager._instance.PlaySoundEffect(hitMarkSound);
-            if(_lives == 0)
+            if (_lives == 0)
+            {
+                Instantiate(alienExplosion, _transform.position, Quaternion.identity);
                 Destroy(gameObject);
+            }
         }
     }
 

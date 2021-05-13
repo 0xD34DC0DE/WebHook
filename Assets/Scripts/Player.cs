@@ -38,7 +38,7 @@ public class Player : Singleton<Player>
 
     private void CheckHealth()
     {
-        if (_lives == 0)
+        if (_lives <= 0)
         {
             deathMenu.SetActive(true);
             GameManager._instance.FinishGame();
