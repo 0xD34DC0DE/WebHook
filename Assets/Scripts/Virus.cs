@@ -83,6 +83,17 @@ public class Virus : MonoBehaviour
 
     private bool IsPlayerInRange()
     {
-        return (Vector3.Distance(_playerTransform.position, gameObject.transform.position) < aggroRadius);
+        bool isInDistance = (Vector3.Distance(_playerTransform.position, gameObject.transform.position) < aggroRadius);
+        if (!isInDistance)
+            return false;
+        
+        RaycastHit raycastHit;
+        if(Physics.Raycast(transform.position, Vector3.Normalize(_playerTransform.position - transform.position), out raycastHit))
+        {
+            if (raycastHit.collider.gameObject.tag.Equals("Player"))
+                return true;
+        }
+
+        return false;
     }
 }

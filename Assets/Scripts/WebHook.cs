@@ -36,10 +36,9 @@ public class WebHook : MonoBehaviour
     private bool _isFiring = false;
     private bool _isHooked = false;
     private bool _isWinding = false;
-    
+
     // Quick hack
     private bool _targetingPlayer = false;
-    
 
     private void Update()
     {
@@ -48,7 +47,8 @@ public class WebHook : MonoBehaviour
         if (_isAiming)
         {
             RayCast();
-            DrawAimTarget();
+            if(!_targetingPlayer)
+                DrawAimTarget();
         }
 
         if (!_isAiming && _targetingPrefabInstance != null)
@@ -129,15 +129,11 @@ public class WebHook : MonoBehaviour
         _targetingPlayer = false;
         if (Physics.Raycast(playerCamera.position, playerCamera.transform.forward, out _raycastHit, Mathf.Infinity))
         {
-            if (_raycastHit.collider.gameObject.tag.Equals("Player"))
-            {
+            _targetingPlayer = _raycastHit.collider.gameObject.tag.Equals("Player");
+            _canLaunch = _raycastHit.distance <= maxDistance;
+
+            if (_targetingPlayer)
                 _canLaunch = false;
-                _targetingPlayer = true;
-            }
-            else
-            {
-                _canLaunch = _raycastHit.distance <= maxDistance;
-            }
         }
         else
         {
@@ -156,7 +152,7 @@ public class WebHook : MonoBehaviour
             return;
         }
         
-        if (_raycastHit.point != Vector3.zero && !_targetingPlayer)
+        if (_raycastHit.point != Vector3.zero)
         {
             if (_targetingPrefabInstance == null)
             {
@@ -200,6 +196,11 @@ public class WebHook : MonoBehaviour
         
         Vector3 direction = Vector3.Normalize(hookStartVisualTransform.position - _hookPoint);
         _hookLineObjectInstance.transform.rotation = Quaternion.LookRotation(direction) * Quaternion.FromToRotation(Vector3.down, Vector3.forward);
+    }
+
+    public bool IsHooked()
+    {
+        return _isHooked;
     }
     
 }

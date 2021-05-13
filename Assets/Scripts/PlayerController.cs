@@ -12,19 +12,22 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform wallJumpBoostLocation;
+    [SerializeField] private WebHook webHook;
     [SerializeField] private float lerpSpeed = 20f;
     [SerializeField] private float additionalGravity = 2f;
 
     private const float RotationSpeed = 100f;
     private const float Speed = 500f;
-    private const float RunningSpeed = 1000f;
-    private const float JumpPower = 200f;
-    private const float WallJumpPower = 300f;
-    private const float NoClipSpeed = 100.0f;
+    [SerializeField] private float runningSpeed = 1000f;
+    [SerializeField] private float jumpPower = 200f;
+    [SerializeField] private float wallJumpPower = 300f;
+    [SerializeField] private float noClipSpeed = 100.0f;
+    [SerializeField] private float airMultiplier = 0.05f;
+    [SerializeField] private float hookMultiplier = 0.3f;
 
     private const float MinVelMagForOppositeMovement = 0.01f ;
-    private const float OppositeMovementMultiplier = 0.2f;
-    private const float MaxSpeed = 300.0f;
+    [SerializeField] private float oppositeMovementMultiplier = 0.6f;
+    [SerializeField] private float maxSpeed = 200.0f;
 
     private float _xInput = 0.0f;
     private float _yInput = 0.0f;
@@ -123,8 +126,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Noclip()
     {
-        _translationZ = _yInput * Time.deltaTime * NoClipSpeed;
-        _translationX = _xInput * Time.deltaTime * NoClipSpeed;
+        _translationZ = _yInput * Time.deltaTime * noClipSpeed;
+        _translationX = _xInput * Time.deltaTime * noClipSpeed;
         
         transform.position = Vector3.Lerp(transform.position, transform.position + ((_translationZ * _camera.transform.forward) + 
                 (_translationX *_camera.transform.right)),  lerpSpeed);
@@ -140,10 +143,10 @@ public class PlayerController : Singleton<PlayerController>
                 _lastCollisionNormal = _currentCollisionNormal;
                 _lastCollisionPoint = _currentCollisionPoint;
                 
-                _rigidbody.AddExplosionForce(WallJumpPower, wallJumpBoostLocation.position, 1.0f);
+                _rigidbody.AddExplosionForce(wallJumpPower, wallJumpBoostLocation.position, 2.0f);
             }
             
-            _rigidbody.AddForce((Vector3.up + orientation.forward * 0.5f) * (JumpPower * 1.5f));
+            _rigidbody.AddForce((Vector3.up + orientation.forward) * (jumpPower * 1.5f));
             _hasJumped = true;
             Invoke(nameof(ResetJump), JumpCooldown);
         }
@@ -192,15 +195,16 @@ public class PlayerController : Singleton<PlayerController>
         //Counteract sliding and sloppy movement
         OppositeMovement(_xInput, _yInput, mag);
         
-        if (_xInput > 0 && xMag > MaxSpeed) _xInput= 0;
-        if (_xInput < 0 && xMag < -MaxSpeed) _xInput = 0;
-        if (_yInput > 0 && yMag > MaxSpeed) _yInput = 0;
-        if (_yInput < 0 && yMag < -MaxSpeed) _yInput = 0;
+        if (_xInput > 0 && xMag > maxSpeed) _xInput= 0;
+        if (_xInput < 0 && xMag < -maxSpeed) _xInput = 0;
+        if (_yInput > 0 && yMag > maxSpeed) _yInput = 0;
+        if (_yInput < 0 && yMag < -maxSpeed) _yInput = 0;
 
         float totalSpeed = Speed;
-        totalSpeed += (_isRunning) ? RunningSpeed : 0f;
+        totalSpeed += (_isRunning) ? runningSpeed : 0f;
 
-        float multiplier = isOnGround ? 1.0f : 0.5f;
+        float multiplier = isOnGround ? 1.0f : airMultiplier;
+        multiplier = webHook.IsHooked() ? hookMultiplier : multiplier;
 
         //Apply forces to move player
         _rigidbody.AddForce(orientation.transform.forward * _yInput * totalSpeed * Time.deltaTime * multiplier);
@@ -225,10 +229,10 @@ public class PlayerController : Singleton<PlayerController>
         
         //Counter movement
         if (Math.Abs(mag.x) > MinVelMagForOppositeMovement && Math.Abs(inputX) < 0.05f || (mag.x < -MinVelMagForOppositeMovement && inputX > 0) || (mag.x > MinVelMagForOppositeMovement && inputX < 0)) {
-            _rigidbody.AddForce(Speed * orientation.transform.right * Time.deltaTime * -mag.x * OppositeMovementMultiplier);
+            _rigidbody.AddForce(Speed * orientation.transform.right * Time.deltaTime * -mag.x * oppositeMovementMultiplier);
         }
         if (Math.Abs(mag.y) > MinVelMagForOppositeMovement && Math.Abs(inputY) < 0.05f || (mag.y < -MinVelMagForOppositeMovement && inputY > 0) || (mag.y > MinVelMagForOppositeMovement && inputY < 0)) {
-            _rigidbody.AddForce(Speed * orientation.transform.forward * Time.deltaTime * -mag.y * OppositeMovementMultiplier);
+            _rigidbody.AddForce(Speed * orientation.transform.forward * Time.deltaTime * -mag.y * oppositeMovementMultiplier);
         }
         
         //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
