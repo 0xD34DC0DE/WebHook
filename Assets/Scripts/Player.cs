@@ -42,6 +42,7 @@ public class Player : Singleton<Player>
         Vector3 newPosition = CheckpointManager._instance._spawnPoint.transform.position + Vector3.up * 1.5f;
         transform.position = newPosition;
         camera.transform.position = newPosition;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         InflictDamage();
     }
 

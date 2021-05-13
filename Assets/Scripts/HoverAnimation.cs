@@ -19,6 +19,7 @@ public class HoverAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData pointerEventData)
     {
+        if (_latestSelection == null) return;
         _latestSelection.GetComponent<Text>().fontSize = DefaultFontSize;
         _latestSelection = null;
     }

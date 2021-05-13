@@ -31,14 +31,18 @@ public class Virus : MonoBehaviour
     private IEnumerator Fire()
     {
         yield return new WaitForSeconds(fireRate);
+        CreateProjectile();
+        StartCoroutine(Fire());
+    }
+
+    private void CreateProjectile()
+    {
         if (IsPlayerInRange())
         {
             var prefab = Instantiate(bullet, _transform.position + _transform.forward, Quaternion.identity);
         }
-
-        StartCoroutine(Fire());
     }
-
+    
     private void FixedUpdate()
     {
         if (IsPlayerInRange())
@@ -49,14 +53,24 @@ public class Virus : MonoBehaviour
     {
         if (collider.gameObject.tag.Equals("PlayerProjectile"))
         {
-            _lives--;
             Destroy(collider.gameObject);
-            AudioManager._instance.PlaySoundEffect(hitMarkSound);
-            if (_lives == 0)
-            {
-                Instantiate(alienExplosion, _transform.position, Quaternion.identity);
-                Destroy(gameObject);
-            }
+            Hit();
+        }
+    }
+
+    public void Hit()
+    {
+        _lives--;
+        AudioManager._instance.PlaySoundEffect(hitMarkSound);
+        CheckLives();
+    }
+    
+    private void CheckLives()
+    {
+        if (_lives == 0)
+        {
+            Instantiate(alienExplosion, _transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 

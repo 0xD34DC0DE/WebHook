@@ -84,6 +84,7 @@ public class GameManager : Singleton<GameManager>
         _isInGame = false;
         LevelManager._instance.LoadScene("MainMenu");
         AudioManager._instance.PlayMusic(mainMenuMusic);
+        ScoreManager._instance.LoadHighScore();
     }
 
     public void LoadLevel1()

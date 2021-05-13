@@ -5,27 +5,40 @@ using UnityEngine.UI;
 
 public class MainMenuUI : HoverAnimation
 {
-    private Button _playButton;
-    private Button _exitButton;
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button scoresButton;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Text level1Record;
+    [SerializeField] private GameObject main;
+    [SerializeField] private GameObject scores;
 
     private void Start()
     {
-        GetComponents();
         SetListeners();
+        level1Record.text = ScoreManager._instance.HighScore;
     }
-
-    private void GetComponents()
-    {
-        _playButton = GameObject.Find("Play").GetComponent<Button>();
-        _exitButton = GameObject.Find("Exit").GetComponent<Button>();
-    }
-
+    
     private void SetListeners()
     {
-        _playButton.onClick.AddListener(Play);
-        _exitButton.onClick.AddListener(Quit);
+        playButton.onClick.AddListener(Play);
+        exitButton.onClick.AddListener(Quit);
+        backButton.onClick.AddListener(ShowMain);
+        scoresButton.onClick.AddListener(ShowScores);
     }
 
+    private void ShowScores()
+    {
+        scores.SetActive(true);
+        main.SetActive(false);
+    }
+
+    private void ShowMain()
+    {
+        main.SetActive(true);
+        scores.SetActive(false);
+    }
+    
     private void Play()
     {
         GameManager._instance.LoadLevel1();

@@ -18,17 +18,7 @@ public class PistolProjectile : MonoBehaviour
     {
         transform.position += transform.forward * 120f * Time.deltaTime;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(collision.gameObject.tag);
-        if (!collision.gameObject.tag.Equals("Virus"))
-        {
-            //TODO kill virus
-        }
-            
-    }
-
+    
     public void SetPlayerCollider(Collider playerCollider)
     {
         Physics.IgnoreCollision(GetComponent<Collider>(), playerCollider);

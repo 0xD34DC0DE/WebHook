@@ -9,6 +9,7 @@ TagManager:
   - AlienProjectile
   - PlayerProjectile
   - Virus
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
