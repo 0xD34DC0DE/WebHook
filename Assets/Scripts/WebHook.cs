@@ -37,9 +37,6 @@ public class WebHook : MonoBehaviour
     private bool _isHooked = false;
     private bool _isWinding = false;
     
-    // Quick hack
-    private bool _targetingPlayer = false;
-    
 
     private void Update()
     {
@@ -82,8 +79,8 @@ public class WebHook : MonoBehaviour
         if (!_isHooked && Input.GetMouseButton(1))
         {
             _isAiming = true;
-            _isFiring = true;
-
+            _isFiring = Input.GetMouseButtonDown(0);
+            
         } else
         {
             _isAiming = false;
@@ -126,18 +123,9 @@ public class WebHook : MonoBehaviour
 
     private void RayCast()
     {
-        _targetingPlayer = false;
         if (Physics.Raycast(playerCamera.position, playerCamera.transform.forward, out _raycastHit, Mathf.Infinity))
         {
-            if (_raycastHit.collider.gameObject.tag.Equals("Player"))
-            {
-                _canLaunch = false;
-                _targetingPlayer = true;
-            }
-            else
-            {
-                _canLaunch = _raycastHit.distance <= maxDistance;
-            }
+            _canLaunch = _raycastHit.distance <= maxDistance;
         }
         else
         {
@@ -156,7 +144,7 @@ public class WebHook : MonoBehaviour
             return;
         }
         
-        if (_raycastHit.point != Vector3.zero && !_targetingPlayer)
+        if (_raycastHit.point != Vector3.zero)
         {
             if (_targetingPrefabInstance == null)
             {
