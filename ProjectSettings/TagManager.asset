@@ -8,6 +8,7 @@ TagManager:
   - Level
   - AlienProjectile
   - PlayerProjectile
+  - Virus
   layers:
   - Default
   - TransparentFX

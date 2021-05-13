@@ -26,16 +26,7 @@ public class Player : Singleton<Player>
         }
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag.Equals("AlienProjectile"))
-        {
-            Destroy(other.gameObject);
-            Hit();
-        }
-    }
-
-    private void Hit()
+    public void InflictDamage()
     {
         _lives--;
         OnPlayerHitTaken.Invoke(_lives);
