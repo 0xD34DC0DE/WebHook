@@ -5615,6 +5615,75 @@ MonoBehaviour:
   fireDelay: 0.5
   projectile: {fileID: 5546311555434022658, guid: db951c3a16113b0499f9a68fb2d85821,
     type: 3}
+--- !u!1001 &928911857
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -79.71872
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.6368597
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -192.9159
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8e1b859447dfece4799340f7261667a3,
+        type: 3}
+      propertyPath: m_Name
+      value: SpawnPlatform
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e1b859447dfece4799340f7261667a3, type: 3}
 --- !u!1 &966198610
 GameObject:
   m_ObjectHideFlags: 0
@@ -8776,9 +8845,9 @@ MonoBehaviour:
     type: 3}
   hookLineObject: {fileID: 601345031653121927, guid: 0954725d515fc824f9d62157023c1e94,
     type: 3}
-  maxDistance: 500
-  minDistance: 10
-  initialWinding: 20
+  maxDistance: 15
+  minDistance: 1
+  initialWinding: 2
   spring: 4.5
   damper: 7
   massScale: 4.5
