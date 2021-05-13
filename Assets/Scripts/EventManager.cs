@@ -41,4 +41,12 @@ public class EventManager : Singleton<EventManager>
     public class OnVirusHitTaken : UnityEvent
     {
     };
+    
+    /*
+        Checkpoints 
+    */
+    [Serializable]
+    public class OnCheckpointChange : UnityEvent<GameObject>
+    {
+    };
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1519216270105743252}
   - component: {fileID: 1519216270105743251}
   m_Layer: 0
-  m_Name: AlienExplosion 1
+  m_Name: AlienExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -735,7 +735,7 @@ ParticleSystem:
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
     alignToDirection: 0
-    m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+    m_Texture: {fileID: 0}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
     m_TextureUVChannel: 0
