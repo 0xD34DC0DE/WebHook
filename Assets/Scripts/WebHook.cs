@@ -197,5 +197,10 @@ public class WebHook : MonoBehaviour
         Vector3 direction = Vector3.Normalize(hookStartVisualTransform.position - _hookPoint);
         _hookLineObjectInstance.transform.rotation = Quaternion.LookRotation(direction) * Quaternion.FromToRotation(Vector3.down, Vector3.forward);
     }
+
+    public bool IsHooked()
+    {
+        return _isHooked;
+    }
     
 }

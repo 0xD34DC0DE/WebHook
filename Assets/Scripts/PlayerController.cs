@@ -12,6 +12,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform orientation;
     [SerializeField] private Transform wallJumpBoostLocation;
+    [SerializeField] private WebHook webHook;
     [SerializeField] private float lerpSpeed = 20f;
     [SerializeField] private float additionalGravity = 2f;
 
@@ -22,6 +23,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float wallJumpPower = 300f;
     [SerializeField] private float noClipSpeed = 100.0f;
     [SerializeField] private float airMultiplier = 0.05f;
+    [SerializeField] private float hookMultiplier = 0.3f;
 
     private const float MinVelMagForOppositeMovement = 0.01f ;
     [SerializeField] private float oppositeMovementMultiplier = 0.6f;
@@ -202,6 +204,7 @@ public class PlayerController : Singleton<PlayerController>
         totalSpeed += (_isRunning) ? runningSpeed : 0f;
 
         float multiplier = isOnGround ? 1.0f : airMultiplier;
+        multiplier = webHook.IsHooked() ? hookMultiplier : multiplier;
 
         //Apply forces to move player
         _rigidbody.AddForce(orientation.transform.forward * _yInput * totalSpeed * Time.deltaTime * multiplier);
