@@ -15,7 +15,7 @@ public class Rocket : MonoBehaviour
 
     private void Update()
     {
-        transform.position += -transform.forward * 70f * Time.deltaTime;
+        transform.position += -transform.forward * 120f * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider collider)

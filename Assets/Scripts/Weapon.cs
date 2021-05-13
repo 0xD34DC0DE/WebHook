@@ -5,7 +5,7 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] protected GameObject nextWeapon;
     [SerializeField] protected GameObject weapon;
-    [SerializeField] private float fireDelay = 0.5f;
+    [SerializeField] protected float fireDelay = 0.5f;
     [SerializeField] private GameObject projectile;
     private bool _isSwitching = false;
     protected Animator animator;

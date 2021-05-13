@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
     public EventManager.OnGamePaused OnGamePausedEvent;
     private bool _isInGame = false;
     private float _timer;
+    private bool _isGameOver = false;
     private bool _isTimerPaused;
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip level1Music;
@@ -110,8 +111,11 @@ public class GameManager : Singleton<GameManager>
     public void FinishGame()
     {
         _isInGame = false;
+        _isGameOver = true;
         TogglePause();
-        ScoreManager._instance.SaveHighScore(GetTimer());
+        
+        if(!Player._instance.IsDead())
+            ScoreManager._instance.SaveHighScore(GetTimer());
     }
     
     public bool IsInGame

@@ -50,7 +50,6 @@ public class Virus : MonoBehaviour
         {
             _lives--;
             Destroy(collider.gameObject);
-            UI._instance.ShowHitMark();
             AudioManager._instance.PlaySoundEffect(hitMarkSound);
             if(_lives == 0)
                 Destroy(gameObject);
