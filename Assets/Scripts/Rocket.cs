@@ -2,13 +2,15 @@
 public class Rocket : MonoBehaviour
 {
     private Rigidbody _playerRigidbody;
-    [SerializeField] private AudioClip _explosionSoundEffect;
-    [SerializeField] private GameObject _explosionEffect;
+    [SerializeField] private AudioClip explosionSoundEffect;
+    [SerializeField] private GameObject explosionEffect;
+    [SerializeField] private AudioClip fireSoundEffect;
     private void Start()
     {
         Destroy(gameObject, 10f);
-        _playerRigidbody = GameObject.Find("Player").GetComponent<Rigidbody>();
         transform.parent = null;
+        _playerRigidbody = GameObject.Find("Player").GetComponent<Rigidbody>();
+        AudioManager._instance.PlaySoundEffect(fireSoundEffect);
     }
 
     private void Update()
@@ -26,8 +28,8 @@ public class Rocket : MonoBehaviour
         if(distance < 8)
             _playerRigidbody.AddForce((distanceMul) * 700f * transform.forward);
         
-        Instantiate(_explosionEffect, transform.position, Quaternion.identity);
-        AudioManager._instance.PlaySoundEffect(_explosionSoundEffect);
+        Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        AudioManager._instance.PlaySoundEffect(explosionSoundEffect);
         Destroy(gameObject);
     }
 }

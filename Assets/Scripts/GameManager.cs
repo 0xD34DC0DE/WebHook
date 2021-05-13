@@ -18,11 +18,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && _isInGame)
-        {
-            TogglePause();
-        }
-
         Tick();
     }
 
@@ -83,24 +78,44 @@ public class GameManager : Singleton<GameManager>
     public void LoadMainMenu()
     {
         StopMusic();
-        LevelManager._instance.LoadScene("MainMenu");
         UnpauseGame();
         ShowCursor();
         _isInGame = false;
+        LevelManager._instance.LoadScene("MainMenu");
         AudioManager._instance.PlayMusic(mainMenuMusic);
     }
 
     public void LoadLevel1()
     {
         StopMusic();
-        LevelManager._instance.LoadScene("Level1");
+        ResetTimer();
+        UnpauseGame();
         HideCursor();
         _isInGame = true;
-        //AudioManager._instance.PlayMusic(level1Music);
+        LevelManager._instance.LoadScene("Level1");
+        ScoreManager._instance.LoadHighScore();
+        AudioManager._instance.PlayMusic(level1Music);
+    }
+
+    public void ResetTimer()
+    {
+        _timer = 0f;
     }
 
     private void StopMusic()
     {
         AudioManager._instance.StopMusic();
+    }
+
+    public void FinishGame()
+    {
+        _isInGame = false;
+        TogglePause();
+        ScoreManager._instance.SaveHighScore(GetTimer());
+    }
+    
+    public bool IsInGame
+    {
+        get => _isInGame;
     }
 }

@@ -10,4 +10,9 @@ public class PlayerCamera : MonoBehaviour
     void Update() {
         transform.position = playerHead.transform.position;
     }
+
+    public void aaa()
+    {
+        
+    }
 }

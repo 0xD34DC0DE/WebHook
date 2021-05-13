@@ -75,7 +75,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Crouch()
     {
-        _capsuleCollider.radius = _isCrouching ? 0.1f : 1.0f;
+        _capsuleCollider.height = _isCrouching ? 1.0f : 2.0f;
     }
 
     public void Update()

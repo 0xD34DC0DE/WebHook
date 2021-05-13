@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UI : Singleton<UI>
 {
     [SerializeField] private Text _timer;
+    [SerializeField] private Text _record;
     [SerializeField] private Text _speed;
     [SerializeField] private Rigidbody _playerRigidbody;
     [SerializeField] private GameObject[] lives = new GameObject[3];
@@ -14,6 +15,7 @@ public class UI : Singleton<UI>
     private void Start()
     {
         Player._instance.OnPlayerHitTaken.AddListener(UpdateUI);
+        _record.text = "RECORD: " + ScoreManager._instance.HighScore;
     }
 
     public void ShowHitMark()

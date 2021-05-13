@@ -3,31 +3,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class MainMenuUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MainMenuUI : HoverAnimation
 {
     private Button _playButton;
     private Button _exitButton;
-    private GameObject _latestSelection;
-    private const int FontSizeSelected = 27;
-    private const int DefaultFontSize = 21;
 
     private void Start()
     {
         GetComponents();
         SetListeners();
-    }
-
-    public void OnPointerEnter(PointerEventData pointerEventData)
-    {
-        if (_latestSelection == pointerEventData.pointerCurrentRaycast.gameObject) return;
-        _latestSelection = pointerEventData.pointerCurrentRaycast.gameObject;
-        _latestSelection.GetComponent<Text>().fontSize = FontSizeSelected;
-    }
-    
-    public void OnPointerExit(PointerEventData pointerEventData)
-    {
-        _latestSelection.GetComponent<Text>().fontSize = DefaultFontSize;
-        _latestSelection = null;
     }
 
     private void GetComponents()

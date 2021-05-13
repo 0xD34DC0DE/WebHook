@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2442500984206264854}
   - component: {fileID: 1606195314910758323}
   - component: {fileID: 3579989419940639097}
-  - component: {fileID: 2769494731887886699}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -84,17 +83,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &2769494731887886699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3075484762779439276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c57f974412c6ba04f849834f83d14edd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pistolProjectile: {fileID: 7605974669666679586, guid: 0ffba4e6dd43b1e4aac44daeb9aa260b,
-    type: 3}
