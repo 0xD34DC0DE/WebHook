@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -161,8 +159,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         return Physics.Raycast(transform.position, Vector3.down, 1.5f);
     }
-
-    // TODO: Stop camera from going upside down
+    
     private void Look()
     {
         _pitch -= Input.GetAxis("Mouse Y") * Time.deltaTime * RotationSpeed;
@@ -234,13 +231,6 @@ public class PlayerController : Singleton<PlayerController>
         if (Math.Abs(mag.y) > MinVelMagForOppositeMovement && Math.Abs(inputY) < 0.05f || (mag.y < -MinVelMagForOppositeMovement && inputY > 0) || (mag.y > MinVelMagForOppositeMovement && inputY < 0)) {
             _rigidbody.AddForce(Speed * orientation.transform.forward * Time.deltaTime * -mag.y * oppositeMovementMultiplier);
         }
-        
-        //Limit diagonal running. This will also cause a full stop if sliding fast and un-crouching, so not optimal.
-        /*if (Mathf.Sqrt((Mathf.Pow(rb.velocity.x, 2) + Mathf.Pow(rb.velocity.z, 2))) > maxSpeed) {
-            float fallingSpeed = rb.velocity.y;
-            Vector3 n = rb.velocity.normalized * maxSpeed;
-            rb.velocity = new Vector3(n.x, fallingSpeed, n.z);
-        }*/
     }
     
     private void OnCollisionEnter(Collision other)

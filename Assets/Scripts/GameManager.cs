@@ -117,9 +117,4 @@ public class GameManager : Singleton<GameManager>
         if(!Player._instance.IsDead())
             ScoreManager._instance.SaveHighScore(GetTimer());
     }
-    
-    public bool IsInGame
-    {
-        get => _isInGame;
-    }
 }

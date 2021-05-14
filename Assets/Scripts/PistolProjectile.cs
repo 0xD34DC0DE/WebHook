@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PistolProjectile : MonoBehaviour
 {
@@ -17,10 +14,5 @@ public class PistolProjectile : MonoBehaviour
     private void Update()
     {
         transform.position += transform.forward * 120f * Time.deltaTime;
-    }
-    
-    public void SetPlayerCollider(Collider playerCollider)
-    {
-        Physics.IgnoreCollision(GetComponent<Collider>(), playerCollider);
     }
 }

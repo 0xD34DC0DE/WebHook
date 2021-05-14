@@ -5,7 +5,6 @@ using UnityEngine;
 public class ScoreManager : Singleton<ScoreManager>
 {
     public String HighScore { get; private set; }
-    
     private const String DirectoryName = "Data";
     private const String FileName = "score.txt";
     private String Path = DirectoryName + "/" + FileName;
@@ -19,7 +18,7 @@ public class ScoreManager : Singleton<ScoreManager>
     {
         CheckPath();
         if (IsFileEmpty())
-            HighScore = "00:32:10:00";
+            HighScore = "99:99:99:99";
         else
             HighScore = File.ReadAllLines(Path)[0];
     }
@@ -28,7 +27,6 @@ public class ScoreManager : Singleton<ScoreManager>
     {
         if (Int64.Parse(HighScore.Replace(":", "")) > Int64.Parse(score.Replace(":", "")))
         {
-            Debug.Log("aaa");
             File.WriteAllLines(Path, new []{score});
             HighScore = score;
         }

@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovingPlates : MonoBehaviour
 {
-    [SerializeField]
-    private float range = 100f;
-    [SerializeField]
-    private float speed = 2f;
+    [SerializeField] private float range = 100f;
+    [SerializeField] private float speed = 2f;
     private int _direction = 1;
     private float z;
 

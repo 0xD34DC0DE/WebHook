@@ -4,7 +4,6 @@ using UnityEngine;
 public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource _audioSource;
-
     private IEnumerator _musicCoroutine;
 
     private void Start()

@@ -10,7 +10,6 @@ public class EventManager : Singleton<EventManager>
     [Serializable]
     public class OnGamePaused : UnityEvent<bool>
     {
-        private UnityEvent<bool> _unityEvent;
     };
 
     /*

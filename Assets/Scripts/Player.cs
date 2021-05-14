@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : Singleton<Player>
 {
@@ -58,10 +55,5 @@ public class Player : Singleton<Player>
     public bool IsDead()
     {
         return _lives == 0;
-    }
-
-    public void ResetLives()
-    {
-        _lives = MaxLives;
     }
 }
