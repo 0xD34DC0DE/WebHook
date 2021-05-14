@@ -32,13 +32,9 @@ public class VirusProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
-        if (other.gameObject.tag.Equals("Player"))
+        if (other.gameObject.tag.Equals("Player") || other.gameObject.tag.Equals("Level"))
         {
             other.gameObject.GetComponent<Player>().InflictDamage();
-        }
-        else
-        {
             Destroy(gameObject);
         }
     }

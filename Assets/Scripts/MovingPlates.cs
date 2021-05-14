@@ -19,7 +19,7 @@ public class MovingPlates : MonoBehaviour
     private void Update()
     {
         CheckDirection();
-        transform.position += new Vector3(0f, 0f, speed * _direction);
+        transform.localPosition += new Vector3(0f, 0f, speed * _direction);
     }
 
     private void CheckDirection()
