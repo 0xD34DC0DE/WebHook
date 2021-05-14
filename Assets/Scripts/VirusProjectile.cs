@@ -37,10 +37,6 @@ public class VirusProjectile : MonoBehaviour
         {
             other.gameObject.GetComponent<Player>().InflictDamage();
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     private void Update()
