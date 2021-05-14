@@ -95,7 +95,6 @@ public class GameManager : Singleton<GameManager>
         HideCursor();
         _isInGame = true;
         LevelManager._instance.LoadScene("Level1");
-        ScoreManager._instance.LoadHighScore();
         AudioManager._instance.PlayMusic(level1Music);
     }
 
